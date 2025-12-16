@@ -1,0 +1,132 @@
+@let _show = showOptions(); @let _ph = placeholder(); @let _label = label();
+@let _isMulti = isMulti(); @let _ids = selectedIds(); @let _id = selectedId();
+@let _searchable = searchable(); @let _all = allItems(); @let _searchBy =
+searchableBy(); @let _q = search();
+
+<div (clickOutside)="toggleOptions(false)" class="wselect">
+	@if (_label) {
+	<div class="wselect__label">{{ (_label | translate)() }}</div>
+	}
+
+	<div class="wselect__body" [class._active]="_show">
+		<!-- header -->
+		<div
+			[class._disabled]="isDisabled()"
+			(click)="toggleOptions()"
+			class="wselect__header"
+		>
+			<span class="material-icons">unfold_more</span>
+
+			<ng-container
+				[ngTemplateOutlet]="viewTpl() || defaultView"
+			></ng-container>
+
+			<ng-template #defaultView>
+				<div class="wselect__text">
+					@if (_isMulti) {
+					<div class="text-overflow">
+						@if (!_ids.length) {
+						<div>{{ (_ph | translate)() }}</div>
+						} @for (sid of _ids; track sid; let i = $index) {
+						<span>
+							@if (i && allItem[sid]) { <span>, </span> } @if
+							(allItem[sid]) {
+							<span>
+								{{ (allItem[sid] | translate)() }}
+								<i
+									class="material-icons avatar__icon"
+									(click)="removeItem(i)"
+									>close</i
+								>
+							</span>
+							}
+						</span>
+						}
+					</div>
+					} @else {
+					<div class="text-overflow">
+						{{ ((_id ? allItem[_id] : _ph) | translate)() }}
+					</div>
+					}
+				</div>
+			</ng-template>
+		</div>
+
+		<!-- clear -->
+		@if (clearable() && (_isMulti ? _ids.length : _id)) {
+		<div class="wselect__arrow material-icons" (click)="clear()">close</div>
+		}
+
+		<!-- dropdown caret -->
+		<div
+			class="wselect__arrow material-icons"
+			[class._disabled]="isDisabled()"
+			(click)="toggleOptions()"
+			[class._active]="_show"
+		>
+			expand_more
+		</div>
+
+		<!-- extra buttons -->
+		@for (button of buttons() || []; track button.icon || button.text) { @if
+		(button.icon) {
+		<i
+			class="material-icons"
+			(click)="button.click()"
+			[class._disabled-btn]="button.disabled"
+			>{{ button.icon }}</i
+		>
+		} @else if (button.text) {
+		<span (click)="button.click()" [class._disabled-btn]="button.disabled"
+			>{{ button.text }}</span
+		>
+		} }
+
+		<!-- dropdown -->
+		@if (_show) {
+		<div class="wselect__popup" [class._search]="_searchable">
+			@if (_searchable) {
+			<div>
+				<ng-container [ngTemplateOutlet]="searchTpl() || defaultSearch">
+				</ng-container>
+				<ng-template #defaultSearch>
+					<winput
+						placeholder="{{ ('Enter search text...' | translate)() }}"
+						(wChange)="search.set(($event ?? '') + '')"
+						[focused]="true"
+					/>
+				</ng-template>
+			</div>
+			}
+
+			<div class="popup-block">
+				@for (item of (_all | search: _q: _searchBy + ' __search');
+				track item().id) {
+				<ng-container
+					[ngTemplateOutlet]="itemTpl() || defaultItem"
+					[ngTemplateOutletContext]="{ item: item }"
+				/>
+				} @if (!(_all | search: _q: _searchBy + ' __search')?.length) {
+				<div class="popup-block__empty-search" translate>
+					Nothing was found
+				</div>
+				}
+			</div>
+
+			<ng-template #defaultItem let-item="item">
+				<div class="item" (click)="selectOption(item())">
+					@let id = item().id;
+					<div
+						class="item__text"
+						[class.selected]="_isMulti ? _ids.includes(id) : false"
+					>
+						@if (item()[bindLabel()]) { {{ (item()[bindLabel()] |
+						translate)() }} } @else { {{ ('Unknown item' |
+						translate)() }} }
+					</div>
+				</div>
+			</ng-template>
+		</div>
+		}
+	</div>
+</div>

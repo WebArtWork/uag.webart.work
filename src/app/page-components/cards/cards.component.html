@@ -1,0 +1,27 @@
+<section
+	class="cards"
+	[class.cards--tiny]="size() === 'tiny'"
+	[class.cards--sm]="size() === 'sm'"
+	[class.cards--md]="size() === 'md'"
+	[style.--cards-min]="minWidth() + 'px'"
+>
+	<div
+		*ngFor="let item of items(); let i = index"
+		class="cards__item"
+		(click)="cardClick.emit({ index: i, item })"
+	>
+		<div class="cards__img" *ngIf="item.imageUrl">
+			<img
+				[src]="item.imageUrl!"
+				[alt]="item.imageAlt || item.title"
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
+
+		<div class="cards__title">{{ item.title }}</div>
+		<div class="cards__desc" *ngIf="item.description">
+			{{ item.description }}
+		</div>
+	</div>
+</section>

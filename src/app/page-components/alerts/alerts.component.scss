@@ -1,0 +1,44 @@
+/* BEM: .alerts */
+.alerts {
+	display: grid;
+	gap: 8px;
+
+	&--inline {
+		grid-auto-flow: column;
+		align-items: start;
+	}
+
+	&__item {
+		position: relative;
+		padding: 10px 12px;
+		border-radius: 10px;
+		border: 1px solid var(--c-border);
+		background: var(--c-bg-secondary);
+		line-height: 1.35;
+
+		&--info {
+			border-color: #7aa7ff33;
+		}
+		&--success {
+			border-color: #35c46a33;
+		}
+		&--warn {
+			border-color: #ffc24a33;
+		}
+		&--error {
+			border-color: #ff6b6b33;
+		}
+	}
+
+	&__close {
+		position: absolute;
+		top: 6px;
+		right: 8px;
+		border: 0;
+		background: transparent;
+		font-size: 16px;
+		cursor: pointer;
+		padding: 0 4px;
+		line-height: 1;
+	}
+}

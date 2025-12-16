@@ -1,0 +1,132 @@
+<div class="user">
+	<nav class="user__topbar">
+		<ul class="user__menu">
+			<li class="user__menu-item">
+				<material-icon routerLink="/" icon="home"></material-icon>
+			</li>
+
+			<li class="user__menu-item user__menu-spacer"></li>
+
+			<li class="user__menu-item user__menu-burger">
+				<icon-burger
+					(updated)="isOpen.set($event)"
+					aria-label="Menu"
+					#burger
+				></icon-burger>
+			</li>
+		</ul>
+	</nav>
+
+	<aside class="user__drawer" [class._open]="isOpen()">
+		<button
+			class="user__iconbtn user__drawer-close"
+			aria-label="Close sidebar"
+			(click)="burger.toggle()"
+			type="button"
+		>
+			<span class="material-icons">close</span>
+		</button>
+
+		<div class="user__drawer-header">
+			<a
+				(click)="isOpen() && burger.toggle()"
+				class="user__drawer-profile"
+				routerLink="/profile"
+			>
+				<img
+					class="user__avatar user__avatar--sm"
+					[src]="userService.thumb()"
+					alt="User avatar"
+					height="32"
+					width="32"
+				/>
+				<span class="user__title" translate>Profile</span>
+			</a>
+
+			<wbutton
+				(click)="userService.logout(); isOpen() && burger.toggle()"
+				class="user__iconbtn user__logout"
+				aria-label="Logout"
+				type="link"
+			>
+				<span class="material-icons">logout</span>
+			</wbutton>
+		</div>
+
+		<hr class="user__hr" />
+
+		@if (userService.role('admin')) {
+		<material-icon
+			(click)="isOpen() && burger.toggle()"
+			routerLink="/admin/users"
+			icon="manage_accounts"
+			name="Users"
+		></material-icon>
+
+		<material-icon
+			(click)="isOpen() && burger.toggle()"
+			routerLink="/admin/clients"
+			icon="people"
+			name="Clients"
+		></material-icon>
+
+		<material-icon
+			(click)="isOpen() && burger.toggle()"
+			routerLink="/admin/forms"
+			icon="backup_table"
+			name="Forms"
+		></material-icon>
+
+		<material-icon
+			(click)="isOpen() && burger.toggle()"
+			routerLink="/admin/translates"
+			icon="translate"
+			name="Translates"
+		></material-icon>
+
+		<hr class="user__hr" />
+		}
+
+		<material-icon
+			(click)="isOpen() && burger.toggle()"
+			routerLink="/birds"
+			icon="translate"
+			name="Birds"
+		></material-icon>
+
+		<div class="user__drawer-bottom">
+			<button
+				(click)="userService.toggleTheme()"
+				class="user__drawer-btn"
+				type="button"
+			>
+				<span class="material-icons">
+					@if (userService.theme() === 'dark') { dark_mode } @else {
+					light_mode }
+				</span>
+				<span
+					[translate]="((userService.theme() || 'dark') | titlecase) + ' theme'"
+				></span>
+			</button>
+
+			@if (languageService.language()?.name) {
+			<button
+				(click)="languageService.nextLanguage()"
+				aria-label="Switch language"
+				class="user__drawer-btn"
+				type="button"
+			>
+				<span class="material-icons">language</span>
+				<span
+					[translate]="languageService.language()?.name || ''"
+				></span>
+			</button>
+
+			}
+		</div>
+	</aside>
+
+	<div class="user__main">
+		<router-outlet />
+	</div>
+</div>

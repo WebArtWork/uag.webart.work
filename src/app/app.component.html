@@ -1,0 +1,43 @@
+<div style="padding: 16px; display: grid; gap: 10px; max-width: 560px">
+	<button type="button" (click)="connectKeplr()" [disabled]="isConnecting()">
+		@if (isConnecting()) { connecting… } @else { connect Keplr }
+	</button>
+
+	@if (address()) {
+	<div><b>address:</b> {{ address() }}</div>
+	<div><b>balance:</b> {{ uag() }} UAG ({{ uuag() }} uuag)</div>
+
+	<button type="button" (click)="refreshBalance()">refresh balance</button>
+
+	<hr />
+
+	<label style="display: grid; gap: 6px">
+		<div><b>to wallet</b></div>
+		<input
+			type="text"
+			[value]="toAddress()"
+			(input)="toAddress.set(($any($event.target)).value)"
+		/>
+	</label>
+
+	<label style="display: grid; gap: 6px">
+		<div><b>amount (UAG)</b></div>
+		<input
+			type="text"
+			[value]="amountUag()"
+			(input)="amountUag.set(($any($event.target)).value)"
+		/>
+	</label>
+
+	<button type="button" (click)="send()" [disabled]="isSending()">
+		@if (isSending()) { sending… } @else { send }
+	</button>
+
+	@if (txHash()) {
+	<div><b>tx hash:</b> <code>{{ txHash() }}</code></div>
+	} } @if (error()) {
+	<div style="color: #ff6b6b"><b>error:</b> {{ error() }}</div>
+	}
+</div>
+
+<!-- <router-outlet /> -->

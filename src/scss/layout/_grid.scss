@@ -1,0 +1,225 @@
+// ===== GRID (non-breaking upgrade) =====
+@use 'sass:map';
+@use 'src/scss/utils/media' as media;
+
+// Fractions mapped to your existing class names
+//  .col-5  (20%), .col-4 (25%), .col-3 (33.33%), .col-25 (40%),
+//  .col-2  (50%), .col-23 (66.66%), .col-1 (100%)
+$fractions: (
+	5: 20%,
+	4: 25%,
+	3: 33.3333%,
+	25: 40%,
+	2: 50%,
+	23: 66.6667%,
+	1: 100%,
+);
+
+// Breakpoints to generate responsive variants: .col-3-sm, .col-3-md, etc.
+$bp-order: (sm, md, lg, xl);
+
+// Gutter scale (both axes), used by .g-*, .gx-*, .gy-*
+$gutters: (
+	0: 0px,
+	1: 4px,
+	2: 8px,
+	3: 12px,
+	4: 16px,
+	5: 20px,
+	6: 24px,
+	7: 32px,
+);
+
+// -----------------------
+// Row (container)
+// -----------------------
+.row {
+	display: flex;
+	flex-wrap: wrap;
+
+	// Logical gutters (RTL-safe)
+	--gutter-x: 10px;
+	--gutter-y: 10px;
+
+	// Negative margins to offset column paddings
+	margin-inline: calc(var(--gutter-x) * -1);
+	margin-block: calc(var(--gutter-y) * -1);
+
+	// Row alignment helpers
+	&.start {
+		justify-content: flex-start;
+	}
+	&.center {
+		justify-content: center;
+	}
+	&.end {
+		justify-content: flex-end;
+	}
+	&.between {
+		justify-content: space-between;
+	}
+	&.around {
+		justify-content: space-around;
+	}
+	&.items-start {
+		align-items: flex-start;
+	}
+	&.items-center {
+		align-items: center;
+	}
+	&.items-end {
+		align-items: flex-end;
+	}
+	&.items-stretch {
+		align-items: stretch;
+	}
+
+	&.nowrap {
+		flex-wrap: nowrap;
+	}
+	&.reverse {
+		flex-direction: row-reverse;
+	}
+}
+
+// -----------------------
+// Column base styles
+// -----------------------
+@mixin col-base {
+	box-sizing: border-box;
+	padding-inline: var(--gutter-x);
+	padding-block: var(--gutter-y);
+	min-width: 0;
+}
+
+[class^='col-'],
+[class*=' col-'],
+.col,
+.col-auto {
+	@include col-base;
+}
+
+// Auto grow / shrink columns
+.col {
+	flex: 1 1 0;
+	max-width: 100%;
+}
+.col-auto {
+	flex: 0 0 auto;
+	width: auto;
+	max-width: none;
+}
+
+// -----------------------
+// Fraction columns + offsets
+// -----------------------
+@mixin cols($suffix: '') {
+	@each $name, $pct in $fractions {
+		.col-#{$name}#{$suffix} {
+			flex: 0 0 #{$pct};
+			max-width: #{$pct};
+		}
+		.off-#{$name}#{$suffix} {
+			margin-inline-start: #{$pct};
+		}
+	}
+}
+
+// Base (no breakpoint suffix) – keeps your existing API intact
+@include cols();
+
+// Responsive variants: .col-3-sm, .col-3-md, .col-3-lg, .col-3-xl
+@each $bp in $bp-order {
+	@include media.bp-min(#{$bp}) {
+		@include cols('-' + $bp);
+	}
+}
+
+// -----------------------
+// Order utilities (with responsive variants)
+// -----------------------
+@mixin orders($suffix: '') {
+	.order-first#{$suffix} {
+		order: -9999;
+	}
+	.order-last#{$suffix} {
+		order: 9999;
+	}
+	@for $i from 0 through 12 {
+		.order-#{$i}#{$suffix} {
+			order: $i;
+		}
+	}
+}
+@include orders();
+@each $bp in $bp-order {
+	@include media.bp-min(#{$bp}) {
+		@include orders('-' + $bp);
+	}
+}
+
+// -----------------------
+// Gutter utilities (set CSS vars)
+// .g-* affects both axes, .gx-* / .gy-* per axis
+// -----------------------
+@each $k, $val in $gutters {
+	.g-#{$k} {
+		--gutter-x: #{$val};
+		--gutter-y: #{$val};
+	}
+	.gx-#{$k} {
+		--gutter-x: #{$val};
+	}
+	.gy-#{$k} {
+		--gutter-y: #{$val};
+	}
+}
+
+// -----------------------
+// Responsive visibility (simple helpers)
+// -----------------------
+.hide-sm {
+	@include media.bp-max(sm) {
+		display: none !important;
+	}
+}
+.hide-md {
+	@include media.bp-only(md) {
+		display: none !important;
+	}
+}
+.hide-lg {
+	@include media.bp-only(lg) {
+		display: none !important;
+	}
+}
+.hide-xl {
+	@include media.bp-min(xl) {
+		display: none !important;
+	}
+}
+
+.show-sm {
+	display: none !important;
+	@include media.bp-max(sm) {
+		display: block !important;
+	}
+}
+.show-md {
+	display: none !important;
+	@include media.bp-only(md) {
+		display: block !important;
+	}
+}
+.show-lg {
+	display: none !important;
+	@include media.bp-only(lg) {
+		display: block !important;
+	}
+}
+.show-xl {
+	display: none !important;
+	@include media.bp-min(xl) {
+		display: block !important;
+	}
+}

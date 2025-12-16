@@ -1,0 +1,36 @@
+/* BEM: .gallery */
+.gallery {
+	display: grid;
+	grid-template-columns: repeat(
+		auto-fill,
+		minmax(var(--gallery-min, 180px), 1fr)
+	);
+	gap: var(--gutter);
+
+	&__item {
+		background: var(--c-bg-secondary);
+		border: 1px solid var(--c-border);
+		border-radius: 12px;
+		overflow: hidden;
+		margin: 0; /* reset figure default */
+		display: grid;
+	}
+
+	&__img {
+		display: block;
+		inline-size: 100%;
+		block-size: auto;
+		object-fit: cover;
+	}
+
+	&__caption {
+		padding: 8px 10px;
+		color: var(--c-text-primary);
+	}
+
+	&__link {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+	}
+}

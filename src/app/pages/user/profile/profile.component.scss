@@ -1,0 +1,78 @@
+@use 'src/scss/utils/media' as media;
+
+.profile {
+	display: block;
+
+	&__card {
+		position: relative;
+		inline-size: 100%;
+		max-inline-size: 100%; // stretch to container width
+		background: var(--c-bg-secondary);
+		padding: var(--sp-5) var(--sp-4); // was var(--sp-7)
+		display: flex;
+		flex-direction: column;
+		gap: var(--sp-4);
+	}
+
+	&__tabs {
+		display: flex;
+		gap: var(--sp-3);
+		border-bottom: 1px solid var(--c-border);
+		padding-bottom: var(--sp-3);
+		margin-bottom: var(--sp-3); // a bit tighter
+	}
+
+	&__tab {
+		border: 0;
+		background: transparent;
+		color: var(--c-text-secondary);
+		font-weight: 600;
+		font-size: 0.9rem;
+		padding: var(--sp-1_5) var(--sp-3); // slightly smaller
+		border-radius: var(--b-radius-btn);
+		cursor: pointer;
+		transition:
+			background-color var(--motion) var(--easing),
+			color var(--motion) var(--easing);
+
+		&:focus-visible {
+			outline: none;
+			box-shadow: var(--focus-ring);
+		}
+	}
+
+	&__body,
+	&__panel {
+		display: flex;
+		flex-direction: column;
+		gap: var(--sp-3);
+	}
+
+	&__fields {
+		.winput__field {
+			background: transparent;
+			border: 1px solid var(--c-border);
+			border-radius: var(--b-radius);
+			color: var(--c-text-secondary);
+			transition: border-color var(--motion) var(--easing);
+
+			&:focus-within {
+				border-color: var(--c-primary);
+			}
+		}
+
+		.wbutton {
+			min-block-size: 42px;
+			border-radius: var(--b-radius-btn);
+			font-weight: 600;
+		}
+	}
+
+	@include media.bp-max(md) {
+		padding: var(--sp-3);
+
+		&__card {
+			padding: var(--sp-4);
+		}
+	}
+}

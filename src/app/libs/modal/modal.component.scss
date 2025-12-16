@@ -1,0 +1,81 @@
+:host {
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	display: block;
+}
+
+.wacom-modal {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--sp-8);
+	box-sizing: border-box;
+	background-color: rgba(0, 0, 0, 0.55);
+
+	&__content {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		inline-size: min(960px, 100%);
+		max-block-size: 90vh;
+		background: var(--c-bg-secondary);
+		border-radius: var(--b-radius-card);
+		box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+		overflow: hidden;
+	}
+
+	&__content--small {
+		inline-size: min(480px, 100%);
+	}
+
+	&__content--big {
+		inline-size: min(1200px, 100%);
+	}
+
+	&__content--full {
+		inline-size: min(1440px, 100%);
+		max-block-size: calc(100vh - 2 * var(--sp-4));
+	}
+
+	&__body {
+		flex: 1 1 auto;
+		min-block-size: 0;
+		overflow: auto; // keep global modal scroll
+		padding: var(--sp-4);
+		/* extra space on the right so content never touches the close icon */
+		padding-inline-end: calc(var(--sp-4) + 3rem);
+	}
+
+	&__close {
+		position: absolute;
+		inset-block-start: var(--sp-3); // a bit more air for the cross
+		inset-inline-end: var(--sp-2);
+		border: 0;
+		background: transparent;
+		cursor: pointer;
+		color: var(--c-text-secondary);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 999px;
+		padding: var(--sp-1_5);
+
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.06);
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.wacom-modal {
+		padding: var(--sp-4);
+
+		&__body {
+			padding: var(--sp-3);
+			padding-inline-end: calc(var(--sp-3) + 3rem);
+		}
+	}
+}

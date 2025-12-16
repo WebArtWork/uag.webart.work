@@ -1,0 +1,6 @@
+<wselect
+	(wChange)="onChange.emit($event)"
+	placeholder="Select user..."
+	[items]="userService.users()"
+	[wModel]="value()"
+></wselect>

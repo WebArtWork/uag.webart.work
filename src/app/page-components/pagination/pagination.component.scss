@@ -1,0 +1,32 @@
+/* BEM: .pagination */
+.pagination {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+	justify-content: center;
+
+	&__page {
+		color: var(--c-white);
+		padding: 8px 12px;
+		border-radius: 10px;
+		border: 1px solid var(--c-border);
+		background: var(--c-bg-secondary);
+		cursor: pointer;
+
+		&--active {
+			border-color: var(--c-primary);
+		}
+
+		&--disabled {
+			opacity: 0.5;
+			pointer-events: none;
+			cursor: default;
+		}
+	}
+
+	&__ellipsis {
+		padding: 0 6px;
+		opacity: 0.7;
+		user-select: none;
+	}
+}

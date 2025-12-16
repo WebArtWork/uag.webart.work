@@ -1,0 +1,17 @@
+<section
+	class="stats"
+	[class.stats--left]="align() === 'left'"
+	[class.stats--right]="align() === 'right'"
+	[class.stats--sm]="valueSize() === 'sm'"
+	[class.stats--lg]="valueSize() === 'lg'"
+	[style.--stats-min]="minWidth() + 'px'"
+>
+	<div
+		*ngFor="let s of items(); let i = index"
+		class="stats__item"
+		(click)="itemClick.emit({ index: i, item: s })"
+	>
+		<div class="stats__value">{{ s.value }}</div>
+		<div class="stats__label">{{ s.label }}</div>
+	</div>
+</section>

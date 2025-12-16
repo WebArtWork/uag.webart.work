@@ -1,0 +1,54 @@
+/* Layout primitives */
+.stack {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-2);
+}
+.stack--sm {
+	gap: var(--sp-1);
+}
+.stack--lg {
+	gap: var(--sp-4);
+}
+
+.cluster {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--sp-2);
+	align-items: center;
+}
+.cluster--start {
+	justify-content: flex-start;
+}
+.cluster--end {
+	justify-content: flex-end;
+}
+.cluster--between {
+	justify-content: space-between;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(var(--cols, 12), minmax(0, 1fr));
+	gap: var(--gap, var(--sp-2));
+}
+.reel {
+	display: flex;
+	overflow: auto;
+	gap: var(--sp-2);
+	scroll-snap-type: x mandatory;
+	padding-bottom: var(--sp-2);
+}
+.reel > * {
+	scroll-snap-align: start;
+}
+.sidebar {
+	display: grid;
+	grid-template-columns: var(--sidebar-w, 280px) 1fr;
+	gap: var(--sp-2);
+}
+@media (max-width: 991px) {
+	.sidebar {
+		grid-template-columns: 1fr;
+	}
+}

@@ -1,0 +1,46 @@
+/* BEM: .steps */
+.steps {
+	display: grid;
+	grid-template-columns: repeat(
+		auto-fit,
+		minmax(var(--steps-min, 200px), 1fr)
+	);
+	gap: var(--gutter);
+
+	&__item {
+		background: var(--c-bg-secondary);
+		border: 1px solid var(--c-border);
+		border-radius: 12px;
+		padding: 14px;
+		display: grid;
+		gap: 6px;
+	}
+
+	&__num {
+		inline-size: 32px;
+		block-size: 32px;
+		border-radius: 999px;
+		display: grid;
+		place-items: center;
+		background: var(--c-primary);
+		color: #fff;
+		font-weight: 800;
+	}
+
+	&__title {
+		font-weight: 700;
+		color: var(--c-text-secondary);
+	}
+
+	&__desc {
+		color: var(--c-text-primary);
+	}
+
+	/* alignment modifiers */
+	&--center &__item {
+		text-align: center;
+	}
+	&--right &__item {
+		text-align: right;
+	}
+}

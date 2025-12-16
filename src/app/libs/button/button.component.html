@@ -1,0 +1,10 @@
+@let _type = type(); @let _blocked = isBlocked;
+
+<button
+	[type]="resolveType()"
+	class="wbutton{{ extraClass() ? ' ' + extraClass() : '' }}{{ _type ? ' wbutton--' + _type : '' }}{{ _blocked ? ' is-disabled' : '' }}"
+	[disabled]="_blocked"
+	(click)="clicked($event)"
+>
+	<ng-content></ng-content>
+</button>

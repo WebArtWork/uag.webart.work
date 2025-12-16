@@ -1,0 +1,6 @@
+<a routerLinkActive="_activeLink" [routerLink]="routerLink()" class="mi">
+	<span class="mi__icon material-icons">{{ icon() }}</span>
+	@if (name()) {
+	<span class="mi__name" [translate]="name()"></span>
+	}
+</a>

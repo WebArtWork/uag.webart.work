@@ -1,0 +1,12 @@
+.w-tiny {
+	width: 100%;
+}
+
+/*
+ * Height is controlled mostly via TinyMCE config (height).
+ * Wrapper just makes sure editor stretches horizontally.
+ */
+.w-tiny__editor {
+	display: block;
+	width: 100%;
+}

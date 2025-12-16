@@ -1,0 +1,40 @@
+/* BEM: .hero (adaptive for optional body/media) */
+.hero {
+	display: grid;
+	grid-template-columns: 1.1fr 0.9fr; /* keeps working with your [style.gridTemplateColumns] */
+	gap: var(--gutter);
+	align-items: center;
+
+	/* Auto-collapse to single column if body or media is absent */
+	&:not(:has(.hero__body)),
+	&:not(:has(.hero__media)) {
+		grid-template-columns: 1fr !important;
+	}
+
+	&__actions {
+		display: flex;
+		gap: 10px;
+	}
+
+	&__media img {
+		display: block;
+		inline-size: 100%;
+		block-size: auto;
+		border-radius: 12px;
+	}
+
+	/* Media on the left */
+	&--media-left {
+		grid-auto-flow: dense;
+	}
+	&--media-left &__media {
+		order: -1;
+	}
+}
+
+/* ============ Mobile (≤991px) ============ */
+@media (max-width: 991px) {
+	.hero {
+		grid-template-columns: 1fr !important;
+	}
+}

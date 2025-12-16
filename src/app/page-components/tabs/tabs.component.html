@@ -1,0 +1,39 @@
+<section class="tabs">
+	<div
+		class="tabs__nav"
+		role="tablist"
+		[class.tabs__nav--stretch]="stretch()"
+		(keydown)="onKeydown($event)"
+	>
+		<button
+			*ngFor="let t of items(); let i = index"
+			class="tabs__btn"
+			type="button"
+			role="tab"
+			[id]="tabId(i)"
+			[attr.aria-controls]="panelId(i)"
+			[attr.aria-selected]="isActive(i)"
+			[attr.tabindex]="isActive(i) ? 0 : -1"
+			[disabled]="isDisabled(i)"
+			[class.tabs__btn--active]="isActive(i)"
+			[class.tabs__btn--disabled]="isDisabled(i)"
+			(click)="tabClick.emit({ index: i, item: t }); select(i)"
+		>
+			{{ t.label }}
+		</button>
+	</div>
+
+	<div
+		*ngFor="let t of items(); let i = index"
+		class="tabs__panel"
+		role="tabpanel"
+		[id]="panelId(i)"
+		[attr.aria-labelledby]="tabId(i)"
+		[hidden]="!isActive(i)"
+	>
+		<ng-container *ngIf="t.content; else empty"
+			>{{ t.content }}</ng-container
+		>
+		<ng-template #empty><p></p></ng-template>
+	</div>
+</section>

@@ -1,0 +1,33 @@
+/* BEM: .cta */
+.cta {
+	background: var(--c-bg-secondary);
+	border: 1px solid var(--c-border);
+	border-radius: 14px;
+	padding: 18px;
+	display: grid;
+	gap: 10px;
+
+	&__title {
+		font-size: 1.4rem;
+		font-weight: 800;
+		color: var(--c-text-secondary);
+		margin: 0;
+	}
+
+	&__desc {
+		color: var(--c-text-primary);
+		margin: 0;
+	}
+
+	&__actions {
+		display: flex;
+		gap: 10px;
+	}
+
+	&--center &__actions {
+		justify-content: center;
+	}
+	&--right &__actions {
+		justify-content: flex-end;
+	}
+}

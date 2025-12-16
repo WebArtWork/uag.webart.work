@@ -1,0 +1,48 @@
+html,
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+html {
+	line-height: 1.15;
+	-webkit-text-size-adjust: 100%;
+}
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+main {
+	display: block;
+}
+h1 {
+	font-size: 2em;
+	margin: 0;
+}
+img {
+	border-style: none;
+	max-width: 100%;
+	display: inline-block;
+	vertical-align: top;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+	font-family: inherit;
+	font-size: 100%;
+	line-height: 1.15;
+	margin: 0;
+}
+[type='search'] {
+	-webkit-appearance: textfield;
+	outline-offset: -2px;
+}
+[hidden] {
+	display: none;
+}
+a {
+	text-decoration: none;
+}

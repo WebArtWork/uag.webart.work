@@ -1,0 +1,357 @@
+<div class="wtable">
+	<div class="wtable__header">
+		<div class="wtable__header-main">
+			<h3 class="wtable__title">{{ title() }}</h3>
+
+			@if (headerTpl()) {
+			<div class="wtable__header-slot">
+				<ng-container
+					[ngTemplateOutlet]="headerTpl()?.template"
+				></ng-container>
+			</div>
+			} @if (config().searchable) {
+			<div
+				class="wtable__search"
+				[class.wtable__search--active]="searchShow"
+			>
+				<input
+					class="wtable__search-input"
+					type="text"
+					placeholder="Search..."
+					[(ngModel)]="searching_text"
+					(ngModelChange)="searching()"
+					(keyup.enter)="search(); searchShow = false"
+				/>
+				<span
+					class="material-icons material-symbols-outlined wtable__search-icon"
+					(click)="search(); searchShow = false"
+				>
+					search
+				</span>
+			</div>
+			} @if (!searchShow) {
+			<div class="wtable__search-iconMobile">
+				<span
+					class="material-icons material-symbols-outlined"
+					(click)="searchShow = true"
+				>
+					search
+				</span>
+			</div>
+			}
+
+			<div class="wtable__header-actions">
+				@if (config().headerButtons) { @for (button of
+				config().headerButtons; track button) { @if (button) {
+				<wbutton
+					class="wtable__header-button"
+					[disableSubmit]="true"
+					[extraClass]="button.class"
+					(wClick)="button.click()"
+				>
+					@if (button.icon) {
+					<i class="material-icons" [title]="button.icon">
+						{{ button.icon }}
+					</i>
+					} @if (button.text) {
+					<span>{{ button.text }}</span>
+					}
+				</wbutton>
+				} } } @if (config().create) {
+				<wbutton
+					class="wtable__header-button"
+					[disableSubmit]="true"
+					(wClick)="config().create()"
+				>
+					<i class="material-icons" title="Add"> add </i>
+				</wbutton>
+				}
+			</div>
+		</div>
+	</div>
+
+	<table class="wtable__table" cellpadding="0" cellspacing="0">
+		<thead class="wtable__thead">
+			<tr>
+				@if (config().num) {
+				<th>No.</th>
+				} @for (column of columns(); track column) {
+				<th scope="col">
+					<div
+						class="wtable__sort"
+						[class.is-activeDown]="
+							sort_type.direction === 'desc' &&
+							column.field === sort_type.title
+						"
+						[class.is-activeUp]="
+							sort_type.direction === 'asc' &&
+							column.field === sort_type.title
+						"
+						(click)="sort(column)"
+					>
+						<span>{{ column.title }}</span>
+
+						@if (sortable[column.field]) {
+						<span class="material-icons wtable__sort-icon">
+							keyboard_backspace
+						</span>
+						}
+					</div>
+				</th>
+				} @if (config().delete || config().update ||
+				config().buttons?.length) {
+				<th>
+					@if (action) {
+					<ng-container
+						*ngTemplateOutlet="action.template"
+					></ng-container>
+					} @else { Actions }
+				</th>
+				}
+			</tr>
+		</thead>
+
+		<tbody class="wtable__tbody">
+			@let _cfg = config(); @for (row of _cfg.allDocs ? paginatedRows() :
+			normalizedRows(); track row[bindValue()] ) {
+			<tr>
+				@if (_cfg.num) {
+				<td>{{ row.num }}</td>
+				} @for (column of columns(); track column) { @if
+				(custom_cell[column.field]) {
+				<td [attr.data-label]="column.title + ': '">
+					<ng-container
+						*ngTemplateOutlet="custom_cell[column.field]; context: { $implicit: row }"
+					></ng-container>
+				</td>
+				} @else {
+				<td [attr.data-label]="column.title + ': '">
+					{{ row[column.field] }}
+				</td>
+				} } @if (_cfg.delete || _cfg.update || _cfg.buttons?.length) {
+				<td class="wtable__cell--actions" data-label="Actions: ">
+					<div class="wtable__actions">
+						@for (button of _cfg.buttons || []; track button) { @if
+						(button) { @if (!button.ahref && !button.ahrefFunc &&
+						!button.href && !button.hrefFunc) {
+						<i
+							class="material-icons"
+							[title]="button.icon"
+							(click)="button.click(row)"
+						>
+							{{ button.icon }}
+						</i>
+						} @if (button.ahref) {
+						<a
+							[href]="button.ahref"
+							[target]="button.target || '_blank'"
+						>
+							<i class="material-icons" [title]="button.icon">
+								{{ button.icon }}
+							</i>
+						</a>
+						} @if (button.ahrefFunc) {
+						<a
+							[href]="button.ahrefFunc(row)"
+							[target]="button.target || '_blank'"
+						>
+							<i class="material-icons" [title]="button.icon">
+								{{ button.icon }}
+							</i>
+						</a>
+						} @if (button.href) {
+						<a [routerLink]="button.href">
+							<i class="material-icons" [title]="button.icon">
+								{{ button.icon }}
+							</i>
+						</a>
+						} @if (button.hrefFunc) {
+						<a [routerLink]="button.hrefFunc(row)">
+							<i class="material-icons" [title]="button.icon">
+								{{ button.icon }}
+							</i>
+						</a>
+						} } } @if (_cfg.update) {
+						<i
+							class="material-icons"
+							title="Edit"
+							(click)="_cfg.update(row)"
+						>
+							edit
+						</i>
+						} @if (_cfg.delete) {
+						<i
+							class="material-icons"
+							title="Delete"
+							(click)="_cfg.delete(row)"
+						>
+							delete_outline
+						</i>
+						}
+					</div>
+				</td>
+				}
+			</tr>
+			}
+		</tbody>
+
+		@if (_cfg.perPage || (_cfg.formCreate && _cfg.create)) {
+		<tfoot class="wtable__tfoot">
+			<tr>
+				<td
+					[attr.colspan]="
+						columns().length +
+						(config().delete ||
+						config().update ||
+						config().buttons?.length
+							? 1
+							: 0)
+					"
+				>
+					<div class="wtable__footer">
+						@if (_cfg.perPage) {
+						<div class="wtable__perpage">
+							<div class="wtable__perpage-text">
+								Showing items per page
+							</div>
+
+							<div
+								class="wtable__perpage-dropdown"
+								[class.open]="select_page_size"
+								(clickOutside)="select_page_size = false"
+							>
+								<div
+									class="caption"
+									(click)="
+										select_page_size = !select_page_size
+									"
+								>
+									{{ _cfg.perPage === -1 ? 'All' :
+									_cfg.perPage }}
+								</div>
+
+								<div class="list">
+									@for (pageSize of _cfg.pageSizeOptions;
+									track pageSize) {
+									<div class="item">
+										<div
+											[class.selected]="
+												_cfg.perPage === pageSize
+											"
+											(click)="changePerPage(pageSize)"
+										>
+											{{ pageSize }}
+										</div>
+									</div>
+									} @if (_cfg.allDocs) {
+									<div class="item">
+										<div
+											[class.selected]="
+												_cfg.perPage === -1
+											"
+											(click)="changePerPage(-1)"
+										>
+											All
+										</div>
+									</div>
+									}
+								</div>
+							</div>
+
+							@if (_cfg.perPage >= 0 && !_cfg.allDocs) {
+							<div class="wtable__perpage-result">
+								Page {{ _cfg.page }}
+							</div>
+							} @if (_cfg.perPage >= 0 && _cfg.allDocs) {
+							<div class="wtable__perpage-result">
+								<span>
+									{{ ((_cfg.page - 1) * _cfg.perPage) + 1 }} -
+									{{ (_cfg.page * _cfg.perPage > totalCount()
+									&& totalCount()) || (_cfg.page *
+									_cfg.perPage) }}
+								</span>
+								<span> of </span>
+								<span> {{ totalCount() }} </span>
+							</div>
+							}
+						</div>
+						} @if (_cfg.perPage !== -1 && _cfg.allDocs) {
+						<div class="wtable__pagination">
+							<wbutton
+								class="wtable__arrow wtable__arrow--start"
+								[isMultipleClicksAllowed]="true"
+								[disabled]="_cfg.page === 1"
+								(wClick)="firstPage()
+								"
+							>
+								<span class="material-icons">
+									keyboard_double_arrow_left
+								</span>
+							</wbutton>
+
+							<wbutton
+								class="wtable__arrow wtable__arrow--left"
+								[isMultipleClicksAllowed]="true"
+								[disabled]="_cfg.page === 1"
+								(wClick)="previous()"
+							>
+								<span class="material-icons">
+									chevron_left
+								</span>
+							</wbutton>
+
+							<wbutton
+								class="wtable__arrow wtable__arrow--right"
+								[isMultipleClicksAllowed]="true"
+								[disabled]="_cfg.page * _cfg.perPage >
+									totalCount()"
+								(wClick)="next()"
+							>
+								<span class="material-icons">
+									chevron_right
+								</span>
+							</wbutton>
+
+							<wbutton
+								class="wtable__arrow wtable__arrow--end"
+								[isMultipleClicksAllowed]="true"
+								[disabled]="isLast()"
+								(wClick)="lastPage()"
+							>
+								<span class="material-icons">
+									keyboard_double_arrow_right
+								</span>
+							</wbutton>
+						</div>
+						} @if (!_cfg.allDocs) {
+						<div class="wtable__pagination">
+							<wbutton
+								class="wtable__arrow wtable__arrow--left"
+								[isMultipleClicksAllowed]="true"
+								[disabled]="_cfg.page === 1"
+								(wClick)="previous()"
+							>
+								<span class="material-icons">
+									chevron_left
+								</span>
+							</wbutton>
+
+							<wbutton
+								class="wtable__arrow wtable__arrow--right"
+								[disabled]="normalizedRows().length !== _cfg.perPage"
+								[isMultipleClicksAllowed]="true"
+								(wClick)="next()"
+							>
+								<span class="material-icons">
+									chevron_right
+								</span>
+							</wbutton>
+						</div>
+						}
+					</div>
+				</td>
+			</tr>
+		</tfoot>
+		}
+	</table>
+</div>

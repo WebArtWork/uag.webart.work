@@ -1,0 +1,13 @@
+<ng-template #templateRef let-data>
+	<div class="w-tiny" [ngClass]="data.component?.class">
+		<tinymce
+			class="w-tiny__editor"
+			[ngModel]="getValue(data)"
+			(ngModelChange)="onValueChange(data, $event)"
+			[config]="getConfig(data)"
+			[disabled]="isDisabled(data)"
+			[inline]="isInline(data)"
+			[placeholder]="getPlaceholder(data)"
+		></tinymce>
+	</div>
+</ng-template>

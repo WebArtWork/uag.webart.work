@@ -1,0 +1,43 @@
+/* BEM: .tabs */
+.tabs {
+	display: grid;
+	gap: 10px;
+
+	&__nav {
+		display: flex;
+		gap: 6px;
+	}
+
+	&__nav--stretch {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
+	}
+
+	&__btn {
+		color: var(--c-white);
+		background: var(--c-bg-secondary);
+		border: 1px solid var(--c-border);
+		border-radius: 10px;
+		padding: 8px 12px;
+		cursor: pointer;
+		text-align: center;
+
+		&--active {
+			border-color: var(--c-primary);
+		}
+
+		&--disabled {
+			opacity: 0.5;
+			pointer-events: none;
+			cursor: default;
+		}
+	}
+
+	&__panel {
+		background: var(--c-bg-secondary);
+		border: 1px solid var(--c-border);
+		border-radius: 12px;
+		padding: 12px;
+	}
+}

@@ -1,0 +1,41 @@
+<section
+	class="gallery"
+	[style.--gallery-min]="minWidth() + 'px'"
+	[style.gap]="gap()"
+>
+	<figure *ngFor="let g of items(); let i = index" class="gallery__item">
+		<a
+			*ngIf="g.href; else plainImg"
+			class="gallery__link"
+			[href]="g.href"
+			[attr.target]="g.target || null"
+			[attr.rel]="g.rel || null"
+			(click)="imageClick.emit({ index: i, item: g })"
+		>
+			<img
+				class="gallery__img"
+				[src]="g.src"
+				[alt]="g.alt || g.caption || ('Image ' + (i + 1))"
+				loading="lazy"
+				decoding="async"
+			/>
+		</a>
+		<ng-template #plainImg>
+			<img
+				class="gallery__img"
+				[src]="g.src"
+				[alt]="g.alt || g.caption || ('Image ' + (i + 1))"
+				loading="lazy"
+				decoding="async"
+				(click)="imageClick.emit({ index: i, item: g })"
+			/>
+		</ng-template>
+
+		<figcaption
+			*ngIf="showCaptions() && g.caption"
+			class="gallery__caption"
+		>
+			{{ g.caption }}
+		</figcaption>
+	</figure>
+</section>

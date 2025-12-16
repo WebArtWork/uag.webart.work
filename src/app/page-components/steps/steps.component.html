@@ -1,0 +1,16 @@
+<section
+	class="steps"
+	[class.steps--center]="align() === 'center'"
+	[class.steps--right]="align() === 'right'"
+	[style.--steps-min]="minWidth() + 'px'"
+>
+	<div
+		*ngFor="let s of items(); let i = index"
+		class="steps__item"
+		(click)="stepClick.emit({ index: i, item: s })"
+	>
+		<div class="steps__num">{{ displayNum(i, s) }}</div>
+		<div class="steps__title">{{ s.title }}</div>
+		<div class="steps__desc" *ngIf="s.desc">{{ s.desc }}</div>
+	</div>
+</section>

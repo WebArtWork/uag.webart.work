@@ -1,0 +1,79 @@
+/* Container utilities and width helpers */
+@use 'src/scss/utils/media' as media;
+
+:root {
+	--container-sm: 540px;
+	--container-md: 720px;
+	--container-lg: 960px;
+	--container-xl: 1140px;
+	--container-xxl: 1320px;
+}
+
+.container-fluid {
+	inline-size: 100%;
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl,
+.container-xxl {
+	inline-size: 100%;
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+.container-sm {
+	max-inline-size: var(--container-sm);
+}
+.container-md {
+	max-inline-size: var(--container-md);
+}
+.container-lg {
+	max-inline-size: var(--container-lg);
+}
+.container-xl {
+	max-inline-size: var(--container-xl);
+}
+.container-xxl {
+	max-inline-size: var(--container-xxl);
+}
+
+/* Width helpers */
+.w-auto {
+	inline-size: auto;
+}
+.w-25 {
+	inline-size: 25%;
+}
+.w-33 {
+	inline-size: 33.3333%;
+}
+.w-50 {
+	inline-size: 50%;
+}
+.w-66 {
+	inline-size: 66.6667%;
+}
+.w-75 {
+	inline-size: 75%;
+}
+.w-100 {
+	inline-size: 100%;
+}
+
+/* Min/Max width helpers */
+.minw-0 {
+	min-inline-size: 0;
+}
+.minw-100 {
+	min-inline-size: 100%;
+}
+.maxw-none {
+	max-inline-size: none;
+}
+.maxw-100 {
+	max-inline-size: 100%;
+}

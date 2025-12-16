@@ -1,0 +1,35 @@
+@use 'src/scss/utils/vars' as *;
+
+html {
+	font-size: var(--fs);
+	height: 100%;
+}
+body {
+	font-family: var(--ff-base);
+	color: var(--c-text-primary);
+	background: var(--c-bg-primary);
+	line-height: 1.5;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+}
+
+.container {
+	inline-size: 100%;
+	max-inline-size: var(--container);
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+:focus-visible {
+	outline: none;
+	box-shadow: var(--focus-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation: none !important;
+		transition: none !important;
+	}
+}

@@ -1,0 +1,40 @@
+<section
+	class="table"
+	[class.table--sm]="size() === 'sm'"
+	[class.table--zebra]="zebra()"
+>
+	<div
+		class="table__scroll"
+		[class.table__scroll--sticky]="stickyHeader()"
+		[style.maxHeight]="maxHeight() || null"
+	>
+		<table class="table__inner">
+			<thead class="table__head">
+				<tr>
+					<th
+						*ngFor="let c of columns()"
+						[style.text-align]="c.align || 'left'"
+					>
+						{{ c.label }}
+					</th>
+				</tr>
+			</thead>
+			<tbody class="table__body">
+				<tr
+					*ngFor="let r of rows(); let ri = index"
+					class="table__row"
+					(click)="rowClick.emit({ index: ri, row: r })"
+				>
+					<td
+						*ngFor="let c of columns()"
+						class="table__cell"
+						[style.text-align]="c.align || 'left'"
+						(click)="$event.stopPropagation(); cellClick.emit({ rowIndex: ri, col: c, value: r[c.key] })"
+					>
+						{{ r[c.key] }}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

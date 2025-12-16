@@ -1,0 +1,196 @@
+@let _field = field(); @let _type = type(); @let _name = name(); @let _label =
+label(); @let _disabled = disabled(); @let _items = items(); @let _wClass =
+wClass(); @let _clearable = clearable(); @let _placeholder = placeholder(); @let
+_error = fieldError(); @if (_type !== 'radio' && _type !== 'checkbox' && _type
+!== 'textarea') {
+<label class="winput">
+	@if (_label) {
+	<span class="winput__label">{{ (_label | translate)() }}</span>
+	}
+
+	<div class="winput__control">
+		@if (_field) {
+		<input
+			class="winput__field"
+			[placeholder]="((_placeholder || 'Enter text...') | translate)()"
+			[autocomplete]="getAutocompleteAttr(_type)"
+			[manualDisabled]="_disabled"
+			(keyup.enter)="onSubmit()"
+			(input)="onInput($event)"
+			[class.error]="_error"
+			[ngClass]="_wClass"
+			[field]="_field"
+			(blur)="onBlur()"
+			[manualType]="
+						_type === 'password'
+							? (showPassword() ? 'text' : 'password')
+							: _type || 'text'
+					"
+			#inputEl
+		/>
+		} @else {
+		<input
+			class="winput__field"
+			[placeholder]="((_placeholder || 'Enter text...') | translate)()"
+			[autocomplete]="getAutocompleteAttr(_type)"
+			[attr.disabled]="_disabled ? '' : null"
+			(keyup.enter)="onSubmit()"
+			(input)="onInput($event)"
+			[value]="wModel() ?? ''"
+			[class.error]="_error"
+			[ngClass]="_wClass"
+			[attr.name]="_name"
+			(blur)="onBlur()"
+			[attr.type]="
+						_type === 'password'
+							? (showPassword() ? 'text' : 'password')
+							: _type || 'text'
+					"
+			#inputEl
+		/>
+		} @if (_clearable) {
+		<i class="material-icons winput__clear" (click)="onClear()">close</i>
+		} @if (_type === 'password') {
+		<span
+			class="winput__eye material-icons"
+			(click)="showPassword.set(!showPassword())"
+		>
+			visibility
+		</span>
+		}
+	</div>
+
+	@if (_error) {
+	<div class="winput__error">{{ (_error | translate)() }}</div>
+	}
+</label>
+} @if (_type === 'textarea') {
+<label class="winput">
+	@if (_label) {
+	<span class="winput__label">{{ (_label | translate)() }}</span>
+	}
+
+	<div class="winput__control">
+		@if (_field) {
+		<textarea
+			class="winput__field winput__field--textarea"
+			[placeholder]="((_placeholder || 'Enter text...') | translate)()"
+			[manualDisabled]="_disabled"
+			(keyup.enter)="onSubmit()"
+			(input)="onInput($event)"
+			[class.error]="_error"
+			[ngClass]="_wClass"
+			[field]="_field"
+			(blur)="onBlur()"
+			#inputEl
+		></textarea>
+		} @else {
+		<textarea
+			class="winput__field winput__field--textarea"
+			[placeholder]="((_placeholder || 'Enter text...') | translate)()"
+			[attr.disabled]="_disabled ? '' : null"
+			(keyup.enter)="onSubmit()"
+			(input)="onInput($event)"
+			[value]="wModel() ?? ''"
+			[class.error]="_error"
+			[ngClass]="_wClass"
+			[attr.name]="_name"
+			(blur)="onBlur()"
+			#inputEl
+		></textarea>
+		}
+	</div>
+
+	@if (_error) {
+	<div class="winput__error">{{ (_error | translate)() }}</div>
+	}
+</label>
+} @if (_type === 'radio') { @if (_field) { @for (item of _items; track $index) {
+<label class="winput__choice" [class.disabled]="_disabled">
+	<span class="winput__choice-text">{{ (item | translate)() }}</span>
+	<input
+		[manualDisabled]="_disabled"
+		(input)="onInput($event)"
+		class="winput__native"
+		[class.error]="_error"
+		[ngClass]="_wClass"
+		(blur)="onBlur()"
+		[field]="_field"
+		[value]="item"
+		type="radio"
+		#inputEl
+	/>
+	<span class="winput__choice-mark winput__choice-mark--radio"></span>
+</label>
+} } @else { @for (item of _items; track $index) {
+<label class="winput__choice" [class.disabled]="_disabled">
+	<span class="winput__choice-text">{{ (item | translate)() }}</span>
+	<input
+		class="winput__native"
+		type="radio"
+		[disabled]="_disabled"
+		[class.error]="_error"
+		[ngClass]="_wClass"
+		[value]="item"
+		[name]="_name"
+		[checked]="wModel() === item"
+		(blur)="onBlur()"
+		(input)="onInput($event, item)"
+		#inputEl
+	/>
+	<span class="winput__choice-mark winput__choice-mark--radio"></span>
+</label>
+} } } @if (_type === 'checkbox') { @if (_items.length) {
+<!-- Multi-checkbox list (wModel as string[] in standalone mode) -->
+@for (item of _items; track $index) {
+<label class="winput__choice" [class.disabled]="_disabled">
+	<span class="winput__choice-text">{{ (item | translate)() }}</span>
+	<input
+		(input)="onInput($event, item)"
+		[checked]="isItemChecked(item)"
+		[name]="_name + $index"
+		class="winput__native"
+		[disabled]="_disabled"
+		[class.error]="_error"
+		[ngClass]="_wClass"
+		(blur)="onBlur()"
+		type="checkbox"
+		[value]="item"
+		#inputEl
+	/>
+	<span class="winput__choice-mark"></span>
+</label>
+} } @else {
+<!-- Single checkbox (field OR wModel<boolean>) -->
+<label class="winput__choice" [class.disabled]="_disabled">
+	@if (_label) {
+	<span class="winput__choice-text"> {{ (_label | translate)() }} </span>
+	} @if (_field) {
+	<input
+		[manualDisabled]="_disabled"
+		(input)="onInput($event)"
+		class="winput__native"
+		[class.error]="_error"
+		[ngClass]="_wClass"
+		(blur)="onBlur()"
+		[field]="_field"
+		type="checkbox"
+		#inputEl
+	/>
+	} @else {
+	<input
+		(input)="onInput($event)"
+		[disabled]="_disabled"
+		[class.error]="_error"
+		class="winput__native"
+		[checked]="!!wModel()"
+		[ngClass]="_wClass"
+		(blur)="onBlur()"
+		type="checkbox"
+		[name]="_name"
+		#inputEl
+	/>
+	}
+	<span class="winput__choice-mark"></span>
+</label>
+} }

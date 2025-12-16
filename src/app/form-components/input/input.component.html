@@ -1,0 +1,18 @@
+<ng-template #templateRef let-data>
+	<winput
+		[field]="data.field"
+		[label]="data.props.label ?? inputDefaults.label"
+		[placeholder]="data.props.placeholder ?? inputDefaults.placeholder"
+		[type]="data.props.type ?? inputDefaults.type"
+		[name]="data.props.name || data.props.key || inputDefaults.name"
+		[items]="data.props.items ?? inputDefaults.items"
+		[disabled]="
+			!!data.props.disabled || !!data.component.disabled
+		"
+		[focused]="data.props.focused ?? inputDefaults.focused"
+		[clearable]="data.props.clearable ?? inputDefaults.clearable"
+		[wClass]="data.props.wClass ?? inputDefaults.wClass"
+		[autocomplete]="data.props.autocomplete ?? inputDefaults.autocomplete"
+		[error]="data.props.error ?? inputDefaults.error"
+	></winput>
+</ng-template>

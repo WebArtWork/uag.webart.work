@@ -1,0 +1,18 @@
+<footer
+	class="footer"
+	[style.justifyContent]="justify()"
+	[attr.aria-label]="ariaLabel()"
+>
+	<div class="footer__left">{{ leftText() }}</div>
+	<div class="footer__right">
+		<a
+			*ngFor="let l of links(); let i = index"
+			class="footer__link"
+			[href]="l.href || '#'"
+			[attr.target]="l.target || null"
+			[attr.rel]="l.rel || null"
+			(click)="linkClick.emit({ index: i, item: l })"
+			>{{ l.label }}</a
+		>
+	</div>
+</footer>

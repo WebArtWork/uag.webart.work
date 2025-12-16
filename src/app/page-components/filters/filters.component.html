@@ -1,0 +1,16 @@
+<section class="filters" [style.justifyContent]="justify()">
+	<div class="filters__left">
+		<wselect
+			[items]="leftItems()"
+			[placeholder]="leftPlaceholder()"
+			(valueChange)="leftChange.emit($event)"
+		></wselect>
+	</div>
+	<div class="filters__sort">
+		<wselect
+			[items]="sortItems()"
+			[placeholder]="sortPlaceholder()"
+			(valueChange)="sortChange.emit($event)"
+		></wselect>
+	</div>
+</section>

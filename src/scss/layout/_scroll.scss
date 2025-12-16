@@ -1,0 +1,13 @@
+/* Scrollbar using tokens */
+*::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+	background-color: var(--c-border);
+	border-radius: 8px;
+}
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--c-border) transparent;
+}

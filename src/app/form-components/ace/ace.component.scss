@@ -1,0 +1,16 @@
+.w-ace {
+	width: 100%;
+}
+
+/*
+ * Editor height:
+ * - at least 240px so it’s usable,
+ * - ideally ~60% of viewport height,
+ * - capped at 720px so it doesn’t explode on huge screens.
+ * Works nicely inside a modal of ~80–90vh (leaves room for header/footer/buttons).
+ */
+.w-ace__editor {
+	display: block;
+	width: 100%;
+	height: clamp(240px, 60vh, 720px);
+}

@@ -1,0 +1,83 @@
+/* BEM: wform */
+.wform {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	row-gap: 12px;
+	width: 100%;
+
+	&__title {
+		margin: 0 0 10px 0;
+		color: var(--c-text-primary);
+		font-weight: 600;
+		font-size: 20px;
+		line-height: 1.2;
+		letter-spacing: var(--letter-spacing, 0);
+	}
+
+	&__body {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 12px;
+		width: 100%;
+	}
+
+	&__component {
+		display: block;
+		width: 100%;
+	}
+
+	&__input,
+	&__textarea,
+	&__select {
+		width: 100%;
+		display: block;
+		border: 1px solid var(--c-border);
+		border-radius: var(--b-radius, 8px);
+		background: transparent;
+		color: var(--c-text-secondary);
+		font-size: var(--fs, 16px);
+		line-height: 1.25;
+		padding: 10px 12px;
+		transition: var(--transition, 150ms ease);
+
+		&::placeholder {
+			color: var(--c-placeholder);
+			transition: inherit;
+		}
+
+		&:focus {
+			outline: none;
+			border-color: var(--c-primary);
+		}
+
+		&:disabled {
+			background: var(--c-grey);
+			border-color: var(--c-grey);
+			color: var(--c-grey);
+			opacity: 0.6;
+			cursor: default;
+		}
+	}
+
+	&__textarea {
+		min-height: 88px;
+		resize: vertical;
+	}
+
+	&__select {
+		appearance: none;
+		padding-right: 30px;
+		position: relative;
+	}
+
+	&--two-col &__body {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@media (max-width: 768px) {
+		&__body {
+			grid-template-columns: 1fr !important;
+		}
+	}
+}

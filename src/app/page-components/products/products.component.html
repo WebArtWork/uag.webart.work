@@ -1,0 +1,46 @@
+<section class="products" [style.--products-min]="minWidth() + 'px'">
+	<div *ngFor="let product of items(); let i = index" class="products__item">
+		<div class="products__img" *ngIf="product.imageUrl">
+			<img
+				[src]="product.imageUrl!"
+				[alt]="product.imageAlt || product.title"
+				loading="lazy"
+				decoding="async"
+				(click)="imageClick.emit({ index: i, item: product })"
+			/>
+		</div>
+
+		<div class="products__title">{{ product.title }}</div>
+		<div class="products__desc" *ngIf="product.description">
+			{{ product.description }}
+		</div>
+
+		<div class="products__price">
+			<span class="products__price-current"
+				>{{ product.price.current }}</span
+			>
+			<span *ngIf="product.price.old" class="products__price-old"
+				>{{ product.price.old }}</span
+			>
+			<span *ngIf="product.price.note" class="products__price-note"
+				>{{ product.price.note }}</span
+			>
+		</div>
+
+		<div class="products__actions">
+			<wbutton
+				[type]="primaryType()"
+				(click)="primaryClick.emit({ index: i, item: product })"
+			>
+				{{ product.primaryText || 'Add to cart' }}
+			</wbutton>
+			<wbutton
+				*ngIf="showSecondary()"
+				[type]="secondaryType()"
+				(click)="secondaryClick.emit({ index: i, item: product })"
+			>
+				{{ product.secondaryText || 'Details' }}
+			</wbutton>
+		</div>
+	</div>
+</section>

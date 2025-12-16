@@ -1,0 +1,38 @@
+@let _title = title(); @let _description = description(); @let _buttons =
+buttons(); @let _mediaUrl = mediaUrl();
+
+<section
+	class="hero"
+	[class.hero--media-left]="mediaSide() === 'left'"
+	[style.gridTemplateColumns]="cols()"
+>
+	@if (_title || _description || _buttons.length) {
+	<div class="hero__body">
+		@if (_title) {
+		<h1 class="hero__title">{{ _title }}</h1>
+		} @if (_description) {
+		<p class="hero__desc">{{ _description }}</p>
+		} @if (_buttons.length) {
+		<div class="hero__actions">
+			@for (button of _buttons; track $index) {
+			<wbutton
+				[type]="button.type || 'primary'"
+				(click)="primaryClick.emit()"
+			>
+				{{ button.text }}
+			</wbutton>
+			}
+		</div>
+		}
+	</div>
+	} @if (_mediaUrl) {
+	<div class="hero__media" (click)="mediaClick.emit()">
+		<img
+			[src]="_mediaUrl"
+			[alt]="mediaAlt()"
+			loading="lazy"
+			decoding="async"
+		/>
+	</div>
+	}
+</section>

@@ -1,0 +1,18 @@
+<!--==== Table Module ====-->
+<wtable
+	[rows]="documents()"
+	[columns]="columns"
+	[config]="config"
+	title="Users"
+>
+	@for (role of roles; track role) {
+	<ng-template [cell]="role" let-user>
+		<winput
+			(wChange)="user.is[role] = $event; update(user)"
+			[wModel]="user.is[role]"
+			type="checkbox"
+		/>
+	</ng-template>
+	}
+</wtable>
+<!-- ==================== -->

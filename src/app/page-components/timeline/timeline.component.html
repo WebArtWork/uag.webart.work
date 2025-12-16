@@ -1,0 +1,24 @@
+<section
+	class="timeline"
+	[class.timeline--sm]="size() === 'sm'"
+	[class.timeline--no-line]="!showLine()"
+	[style.--timeline-line]="lineColor()"
+	[style.--timeline-dot]="dotColor()"
+>
+	<div
+		*ngFor="let e of items(); let i = index"
+		class="timeline__event"
+		(click)="eventClick.emit({ index: i, item: e })"
+	>
+		<div
+			class="timeline__dot"
+			[style.background]="e.dotColor || 'var(--timeline-dot)'"
+		></div>
+
+		<div class="timeline__body">
+			<div class="timeline__title">{{ e.title }}</div>
+			<div *ngIf="e.meta" class="timeline__meta">{{ e.meta }}</div>
+			<div *ngIf="e.desc" class="timeline__desc">{{ e.desc }}</div>
+		</div>
+	</div>
+</section>

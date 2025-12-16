@@ -1,0 +1,24 @@
+<section
+	class="badges"
+	[class.badges--inline]="!wrap()"
+	[class.badges--sm]="size() === 'sm'"
+	[class.badges--lg]="size() === 'lg'"
+>
+	<span
+		*ngFor="let b of items(); let i = index"
+		class="badges__item"
+		[ngClass]="'badges__item--' + (b.variant || 'neutral')"
+		(click)="badgeClick.emit({ index: i, item: b })"
+	>
+		{{ b.text }}
+		<button
+			*ngIf="b.removable"
+			type="button"
+			class="badges__remove"
+			aria-label="Remove"
+			(click)="onRemove(i, $event)"
+		>
+			×
+		</button>
+	</span>
+</section>

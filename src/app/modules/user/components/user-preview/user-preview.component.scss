@@ -1,0 +1,20 @@
+.space {
+	&__header {
+		&-avatar {
+			margin-inline-start: 10px;
+			inline-size: 32px;
+			block-size: 32px;
+			border-radius: 120px;
+			overflow: hidden;
+			display: inline-flex;
+
+			img {
+				inline-size: 100%;
+				block-size: 100%;
+				object-fit: cover;
+				border-radius: inherit;
+				display: block;
+			}
+		}
+	}
+}

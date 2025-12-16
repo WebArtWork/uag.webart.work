@@ -1,0 +1,14 @@
+<ng-template #templateRef let-data>
+	<div class="w-ace" [ngClass]="data.component?.class">
+		<ace
+			class="w-ace__editor"
+			(valueChange)="onValueChange(data, $event)"
+			[value]="getValue(data)"
+			[config]="getConfig(data)"
+			[mode]="$any(getMode(data))"
+			[theme]="$any(getTheme(data))"
+			[disabled]="isDisabled(data)"
+			[useAceClass]="getUseAceClass(data)"
+		></ace>
+	</div>
+</ng-template>

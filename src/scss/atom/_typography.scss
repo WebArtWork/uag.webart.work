@@ -1,0 +1,91 @@
+/* Responsive typography utilities
+   - Tokens: --fs-step-0..8, --lh-1..4 (can be overridden per theme)
+   - Utilities: .fs-0..8, .lh-1..4, .fw-3/4/5/6/7/8/9, .ls-tight/normal/loose
+   - Responsive variants: -sm, -md, -lg, -xl
+*/
+@use 'src/scss/utils/media' as media;
+
+:root {
+	/* Font-size steps (clamp for fluid sizing) */
+	--fs-step-0: clamp(12px, 0.8rem + 0vw, 12px);
+	--fs-step-1: clamp(14px, 0.85rem + 0.1vw, 14px);
+	--fs-step-2: clamp(16px, 1rem + 0.2vw, 16px);
+	--fs-step-3: clamp(18px, 1.05rem + 0.3vw, 18px);
+	--fs-step-4: clamp(20px, 1.15rem + 0.5vw, 20px);
+	--fs-step-5: clamp(24px, 1.25rem + 0.7vw, 24px);
+	--fs-step-6: clamp(28px, 1.4rem + 1vw, 28px);
+	--fs-step-7: clamp(32px, 1.6rem + 1.2vw, 32px);
+	--fs-step-8: clamp(40px, 1.9rem + 1.6vw, 40px);
+
+	/* Line-height buckets */
+	--lh-1: 1.15;
+	--lh-2: 1.25;
+	--lh-3: 1.4;
+	--lh-4: 1.6;
+
+	/* Letter-spacing presets */
+	--ls-tight: -0.01em;
+	--ls-normal: 0;
+	--ls-loose: 0.02em;
+}
+
+$fs-steps: 0 1 2 3 4 5 6 7 8;
+$lh-steps: 1 2 3 4;
+$bp-order: media.$bp-order;
+
+@mixin _emit-type($suffix: '') {
+	@each $i in $fs-steps {
+		.fs-#{$i}#{$suffix} {
+			font-size: var(--fs-step-#{$i});
+		}
+	}
+	@each $i in $lh-steps {
+		.lh-#{$i}#{$suffix} {
+			line-height: var(--lh-#{$i});
+		}
+	}
+
+	/* common font-weights */
+	.fw-300#{$suffix} {
+		font-weight: 300;
+	}
+	.fw-400#{$suffix} {
+		font-weight: 400;
+	}
+	.fw-500#{$suffix} {
+		font-weight: 500;
+	}
+	.fw-600#{$suffix} {
+		font-weight: 600;
+	}
+	.fw-700#{$suffix} {
+		font-weight: 700;
+	}
+	.fw-800#{$suffix} {
+		font-weight: 800;
+	}
+	.fw-900#{$suffix} {
+		font-weight: 900;
+	}
+
+	/* letter-spacing */
+	.ls-tight#{$suffix} {
+		letter-spacing: var(--ls-tight);
+	}
+	.ls-normal#{$suffix} {
+		letter-spacing: var(--ls-normal);
+	}
+	.ls-loose#{$suffix} {
+		letter-spacing: var(--ls-loose);
+	}
+}
+
+/* base */
+@include _emit-type();
+
+/* responsive variants */
+@each $bp in $bp-order {
+	@include media.bp-min(#{$bp}) {
+		@include _emit-type('-' + $bp);
+	}
+}

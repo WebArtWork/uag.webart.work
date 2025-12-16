@@ -1,0 +1,131 @@
+@use 'src/scss/utils/media' as media;
+
+.sign {
+	--cols: 2;
+	min-block-size: 100dvh;
+	align-items: stretch;
+	padding: var(--sp-6);
+
+	&__col {
+		display: flex;
+		min-inline-size: 0;
+
+		&--left {
+			grid-column: 1;
+			align-items: center;
+			justify-content: flex-end;
+			padding-inline-end: var(--sp-8); /* space on right */
+		}
+		&--right {
+			grid-column: 2;
+			align-items: center;
+			justify-content: flex-start;
+			padding-inline-start: var(--sp-8); /* space on left */
+		}
+	}
+
+	&__brand {
+		background: none;
+		border: 0;
+		cursor: pointer;
+		padding: 0;
+		display: grid;
+		place-items: center;
+		&:focus-visible {
+			box-shadow: var(--focus-ring);
+			outline: none;
+		}
+	}
+
+	&__logo {
+		display: block;
+		margin-inline: auto;
+		&--img {
+			max-inline-size: 320px;
+			block-size: auto;
+			object-fit: contain;
+		}
+		&--icon {
+			inline-size: clamp(120px, 20vw, 260px);
+			block-size: auto;
+		}
+	}
+
+	&__card {
+		position: relative;
+		inline-size: 100%;
+		max-inline-size: 420px;
+		background: var(--c-bg-secondary);
+		padding: var(--sp-7);
+		display: flex;
+		flex-direction: column;
+		gap: var(--sp-4);
+	}
+
+	&__theme {
+		position: absolute;
+		top: var(--sp-3);
+		right: var(--sp-3);
+		inline-size: 36px;
+		block-size: 36px;
+		display: grid;
+		place-items: center;
+		border: 0;
+		background: transparent;
+		color: var(--c-text-secondary);
+		cursor: pointer;
+		transition: color var(--motion) var(--easing);
+		.material-icons {
+			font-size: 22px;
+		}
+		&:hover {
+			color: var(--c-primary);
+		}
+	}
+
+	&__title {
+		margin: 0;
+		color: var(--c-text-secondary);
+	}
+
+	&__fields {
+		.winput__field {
+			background: transparent;
+			border: 1px solid var(--c-border);
+			border-radius: var(--b-radius);
+			color: var(--c-text-secondary);
+			transition: border-color var(--motion) var(--easing);
+			&:focus-within {
+				border-color: var(--c-primary);
+			}
+		}
+		.wbutton {
+			min-block-size: 42px;
+			border-radius: var(--b-radius-btn);
+			font-weight: 600;
+		}
+	}
+
+	@include media.bp-max(md) {
+		--cols: 1;
+		grid-template-rows: 25% 75%;
+
+		&__col {
+			grid-column: 1;
+			padding-inline: 0;
+
+			&--left {
+				grid-row: 1;
+				align-items: flex-end;
+				justify-content: center;
+				padding-bottom: var(--sp-4);
+			}
+			&--right {
+				grid-row: 2;
+				align-items: flex-start;
+				justify-content: center;
+				padding-top: var(--sp-4);
+			}
+		}
+	}
+}

@@ -1,0 +1,36 @@
+/* Public layout (slim, relies on global utilities) */
+.public {
+	--topbar-h: 56px;
+
+	&__topbar {
+		min-height: var(--topbar-h);
+		background: var(--c-bg-secondary);
+	}
+
+	/* list reset (spacing handled via utilities in HTML) */
+	&__menu {
+		list-style: none;
+	}
+
+	/* main scroll area height */
+	&__main {
+		min-height: calc(100dvh - var(--topbar-h));
+	}
+
+	/* Mobile: dock bar to bottom and pad main */
+	@media (max-width: 767px) {
+		&__topbar {
+			position: fixed;
+			top: auto;
+			bottom: 0;
+			inline-size: 100%;
+			padding-inline: var(--sp-3);
+		}
+		&__menu {
+			justify-content: space-around;
+		}
+		&__topbar + &__main {
+			padding-block-end: calc(var(--sp-5) + var(--topbar-h));
+		}
+	}
+}

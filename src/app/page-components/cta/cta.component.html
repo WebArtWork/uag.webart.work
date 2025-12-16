@@ -1,0 +1,22 @@
+<section
+	class="cta"
+	[class.cta--center]="align() === 'center'"
+	[class.cta--right]="align() === 'right'"
+>
+	<div class="cta__body">
+		<h2 class="cta__title">{{ title() }}</h2>
+		<p class="cta__desc">{{ desc() }}</p>
+		<div class="cta__actions">
+			<wbutton [type]="primaryType()" (click)="primaryClick.emit()">
+				{{ primaryText() }}
+			</wbutton>
+			<wbutton
+				*ngIf="showSecondary()"
+				[type]="secondaryType()"
+				(click)="secondaryClick.emit()"
+			>
+				{{ secondaryText() }}
+			</wbutton>
+		</div>
+	</div>
+</section>

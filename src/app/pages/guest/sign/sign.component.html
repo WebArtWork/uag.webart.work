@@ -1,0 +1,72 @@
+<div class="sign grid g-4">
+	<!-- Desktop: middle-right; Mobile row 1: bottom-center -->
+	<div class="sign__col sign__col--left">
+		<button
+			(click)="userService.toggleTheme()"
+			aria-label="Toggle theme"
+			class="sign__brand"
+			type="button"
+		>
+			@if (logo) {
+			<img class="sign__logo sign__logo--img" [src]="logo" alt="Logo" />
+			} @else {
+			<icon-spider class="sign__logo sign__logo--icon"></icon-spider>
+			}
+		</button>
+	</div>
+
+	<!-- Desktop: middle-left; Mobile row 2: top-center -->
+	<div class="sign__col sign__col--right">
+		<div class="sign__card shadow rounded-card">
+			<button
+				(click)="userService.toggleTheme()"
+				aria-label="Toggle theme"
+				class="sign__theme"
+				type="button"
+			>
+				<span class="material-icons">
+					@if (userService.theme() === 'dark') { dark_mode } @else {
+					light_mode }
+				</span>
+			</button>
+
+			<h1 class="sign__title fs-6 lh-1 fw-700 ls-normal ta-l">
+				Sign In / Sign Up
+			</h1>
+
+			<form
+				(submit)="wFormSubmit(); $event.preventDefault()"
+				class="sign__fields stack"
+			>
+				<winput
+					placeholder="Enter your email..."
+					[field]="signForm.email"
+					[focused]="true"
+					type="email"
+				></winput>
+
+				<winput
+					placeholder="Enter your password..."
+					[field]="signForm.password"
+					type="password"
+				></winput>
+
+				@if (showCode()) {
+				<winput
+					placeholder="Enter code from mailbox..."
+					[field]="signForm.resetPin"
+					type="number"
+				></winput>
+				}
+
+				<wbutton
+					[disabled]="isSubmitDisabled()"
+					type="primary"
+					class="mt-2"
+				>
+					Let's go
+				</wbutton>
+			</form>
+		</div>
+	</div>
+</div>

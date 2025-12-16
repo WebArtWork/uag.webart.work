@@ -1,0 +1,16 @@
+<section
+	class="tags"
+	[class.tags--center]="align() === 'center'"
+	[class.tags--right]="align() === 'right'"
+	[class.tags--sm]="size() === 'sm'"
+	[class.tags--clickable]="clickable()"
+	[style.--tags-gap]="gap()"
+>
+	<div
+		*ngFor="let tag of items(); let i = index"
+		class="tags__item"
+		(click)="clickable() && tagClick.emit({ index: i, value: tag })"
+	>
+		{{ tag }}
+	</div>
+</section>

@@ -1,0 +1,63 @@
+@use 'src/scss/utils/media' as media;
+
+// Responsive spacing utilities generated from tokens --sp-0..--sp-8
+$steps: 0 1 2 3 4 5 6 7 8;
+
+// Base (no suffix)
+@mixin _space-set($suffix: '') {
+	@each $i in $steps {
+		.m-#{$i}#{$suffix} {
+			margin: var(--sp-#{$i});
+		}
+		.mt-#{$i}#{$suffix} {
+			margin-top: var(--sp-#{$i});
+		}
+		.mb-#{$i}#{$suffix} {
+			margin-bottom: var(--sp-#{$i});
+		}
+		.ml-#{$i}#{$suffix} {
+			margin-left: var(--sp-#{$i});
+		}
+		.mr-#{$i}#{$suffix} {
+			margin-right: var(--sp-#{$i});
+		}
+		.mx-#{$i}#{$suffix} {
+			margin-inline: var(--sp-#{$i});
+		}
+		.my-#{$i}#{$suffix} {
+			margin-block: var(--sp-#{$i});
+		}
+
+		.p-#{$i}#{$suffix} {
+			padding: var(--sp-#{$i});
+		}
+		.pt-#{$i}#{$suffix} {
+			padding-top: var(--sp-#{$i});
+		}
+		.pb-#{$i}#{$suffix} {
+			padding-bottom: var(--sp-#{$i});
+		}
+		.pl-#{$i}#{$suffix} {
+			padding-left: var(--sp-#{$i});
+		}
+		.pr-#{$i}#{$suffix} {
+			padding-right: var(--sp-#{$i});
+		}
+		.px-#{$i}#{$suffix} {
+			padding-inline: var(--sp-#{$i});
+		}
+		.py-#{$i}#{$suffix} {
+			padding-block: var(--sp-#{$i});
+		}
+	}
+}
+
+// Emit base utilities
+@include _space-set();
+
+// Emit responsive variants: -sm, -md, -lg, -xl
+@each $bp in media.$bp-order {
+	@include media.bp-min(#{$bp}) {
+		@include _space-set('-' + $bp);
+	}
+}

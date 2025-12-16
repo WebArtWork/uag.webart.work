@@ -1,0 +1,18 @@
+<div class="file-cropper">
+	<div class="file-cropper__cropper">
+		<image-cropper
+			[maintainAspectRatio]="maintainAspectRatio"
+			(imageCropped)="imageCropped($event)"
+			[aspectRatio]="aspectRatio"
+			[imageBase64]="dataUrl"
+			[resizeToWidth]="width"
+			[resizeToHeight]="height"
+			output="base64"
+			format="png"
+		></image-cropper>
+	</div>
+
+	<div class="file-cropper__actions">
+		<wbutton (click)="uploadImage(croppedDataUrl); close()">Crop</wbutton>
+	</div>
+</div>

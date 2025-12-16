@@ -1,0 +1,36 @@
+/* BEM: .tags */
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--tags-gap, 10px);
+	justify-content: flex-start;
+
+	&__item {
+		padding: 6px 10px;
+		border-radius: 999px;
+		background: var(--c-bg-secondary);
+		color: var(--c-text-secondary);
+		border: 1px solid var(--c-border);
+		font-size: 0.9rem;
+		user-select: none;
+	}
+
+	/* size */
+	&--sm &__item {
+		padding: 4px 8px;
+		font-size: 0.8rem;
+	}
+
+	/* alignment */
+	&--center {
+		justify-content: center;
+	}
+	&--right {
+		justify-content: flex-end;
+	}
+
+	/* clickable */
+	&--clickable &__item {
+		cursor: pointer;
+	}
+}

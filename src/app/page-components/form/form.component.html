@@ -1,0 +1,19 @@
+<section class="form">
+	<wform [config]="formConfig()"></wform>
+
+	<div
+		class="form__actions"
+		[class.form__actions--center]="actionsAlign() === 'center'"
+		[class.form__actions--left]="actionsAlign() === 'left'"
+	>
+		<wbutton type="primary" (click)="submitClick.emit()"
+			>{{ submitLabel() }}</wbutton
+		>
+		<wbutton
+			*ngIf="showCancel()"
+			type="warning"
+			(click)="cancelClick.emit()"
+			>{{ cancelLabel() }}</wbutton
+		>
+	</div>
+</section>

@@ -1,0 +1,15 @@
+/* BEM: wformc (form-component container) */
+:host {
+	display: block;
+	position: relative;
+}
+
+.wformc {
+	position: relative;
+	padding: 0;
+
+	&__item {
+		display: block;
+		margin: 0 0 10px 0;
+	}
+}

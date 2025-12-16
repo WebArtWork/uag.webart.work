@@ -1,0 +1,18 @@
+<section class="faq">
+	<div
+		*ngFor="let it of items(); let i = index"
+		class="faq__item"
+		[class.faq__item--open]="isOpen(i)"
+	>
+		<button
+			class="faq__q"
+			type="button"
+			[attr.aria-expanded]="isOpen(i)"
+			[attr.aria-controls]="'faq-a-' + i"
+			(click)="toggle(i)"
+		>
+			{{ it.q }}
+		</button>
+		<div class="faq__a" [id]="'faq-a-' + i">{{ it.a }}</div>
+	</div>
+</section>

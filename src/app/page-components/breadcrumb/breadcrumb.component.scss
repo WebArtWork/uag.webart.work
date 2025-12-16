@@ -1,0 +1,26 @@
+/* BEM: .breadcrumb */
+.breadcrumb {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--c-text-primary);
+
+	&__link {
+		color: var(--c-text-secondary);
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	&__current {
+		font-weight: 600;
+		color: var(--c-text-secondary);
+	}
+
+	&__sep {
+		opacity: 0.5;
+		user-select: none;
+	}
+}

@@ -1,0 +1,20 @@
+<section class="alerts" [class.alerts--inline]="layout() === 'inline'">
+	<div
+		*ngFor="let a of items(); let i = index"
+		class="alerts__item"
+		[ngClass]="'alerts__item--' + a.type"
+		[attr.role]="role()"
+		(click)="itemClick.emit({ index: i, item: a })"
+	>
+		{{ a.text }}
+		<button
+			*ngIf="dismissible() || a.closable"
+			type="button"
+			class="alerts__close"
+			aria-label="Close"
+			(click)="onClose(i, $event)"
+		>
+			×
+		</button>
+	</div>
+</section>

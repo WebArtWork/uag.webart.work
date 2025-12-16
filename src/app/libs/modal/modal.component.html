@@ -1,0 +1,25 @@
+<div class="wacom-modal" (click)="onBackdropClick()">
+	<div
+		class="wacom-modal__content"
+		[ngClass]="[
+			panelClass,
+			size === 'small' ? 'wacom-modal__content--small' : '',
+			(!size || size === 'mid') ? 'wacom-modal__content--mid' : '',
+			size === 'big' ? 'wacom-modal__content--big' : '',
+			size === 'full' ? 'wacom-modal__content--full' : ''
+		]"
+		(click)="$event.stopPropagation()"
+	>
+		<div class="wacom-modal__body"><!-- content host --></div>
+
+		@if (closable) {
+		<button
+			type="button"
+			class="wacom-modal__close material-icons"
+			(click)="close()"
+		>
+			close
+		</button>
+		}
+	</div>
+</div>

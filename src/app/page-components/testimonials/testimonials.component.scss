@@ -1,0 +1,58 @@
+/* BEM: .testimonials */
+.testimonials {
+	display: grid;
+	grid-template-columns: repeat(
+		auto-fit,
+		minmax(var(--testimonials-min, 260px), 1fr)
+	);
+	gap: var(--gutter);
+
+	&__item {
+		background: var(--c-bg-secondary);
+		border: 1px solid var(--c-border);
+		border-radius: 12px;
+		padding: 14px;
+	}
+
+	&__header {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-block-end: 8px;
+	}
+
+	&__avatar {
+		inline-size: 40px;
+		block-size: 40px;
+		border-radius: 999px;
+		object-fit: cover;
+		display: block;
+	}
+
+	&__quote {
+		color: var(--c-text-secondary);
+		font-weight: 600;
+		margin: 0;
+	}
+
+	&__author {
+		color: var(--c-text-primary);
+		margin-top: 6px;
+	}
+
+	&__name {
+		font-weight: 600;
+	}
+
+	&__title {
+		opacity: 0.9;
+	}
+
+	/* alignment modifiers */
+	&--center &__item {
+		text-align: center;
+	}
+	&--right &__item {
+		text-align: right;
+	}
+}

@@ -1,0 +1,27 @@
+<ng-template #templateRef let-data>
+	<ngx-file
+		[label]="data.props.label ?? fileDefaults.label"
+		[placeholder]="
+			data.props.placeholder ?? fileDefaults.placeholder
+		"
+		[disabled]="
+			data.props.disabled === true ||
+			data.component?.disabled === true
+		"
+		[clearable]="data.props.clearable ?? fileDefaults.clearable"
+		[accept]="data.props.accept ?? fileDefaults.accept"
+		[preview]="data.props.preview ?? fileDefaults.preview"
+		[mode]="data.props.mode ?? fileDefaults.mode"
+		[view]="data.props.view ?? fileDefaults.view"
+		[cropWidth]="
+			data.props.cropWidth ?? fileDefaults.cropWidth
+		"
+		[cropHeight]="
+			data.props.cropHeight ?? fileDefaults.cropHeight
+		"
+		[container]="
+			data.props.container ?? fileDefaults.container
+		"
+		[name]="data.props.name ?? fileDefaults.name"
+	></ngx-file>
+</ng-template>

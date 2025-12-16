@@ -1,0 +1,39 @@
+{
+	"compileOnSave": false,
+	"compilerOptions": {
+		"skipLibCheck": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"forceConsistentCasingInFileNames": true,
+		"strictPropertyInitialization": false,
+		"esModuleInterop": true,
+		"typeRoots": ["node_modules/@types"],
+		"noFallthroughCasesInSwitch": true,
+		"paths": {
+			"@page-component/*": ["src/app/page-componnets/*"],
+			"@env": ["src/environments/environment"],
+			"@module/*": ["src/app/modules/*"],
+			"@icon/*": ["src/app/icons/*"],
+			"@lib/*": ["src/app/libs/*"]
+		},
+		"experimentalDecorators": true,
+		"noImplicitOverride": true,
+		"outDir": "./dist/out-tsc",
+		"moduleResolution": "bundler",
+		"noImplicitReturns": true,
+		"resolveJsonModule": true,
+		"importHelpers": true,
+		"declaration": false,
+		"target": "ES2022",
+		"module": "es2020",
+		"sourceMap": true,
+		"baseUrl": "./",
+		"strict": true,
+		"useDefineForClassFields": false
+	},
+	"angularCompilerOptions": {
+		"enableI18nLegacyMessageIdFormat": false,
+		"strictInjectionParameters": true,
+		"strictInputAccessModifiers": true,
+		"strictTemplates": true
+	}
+}

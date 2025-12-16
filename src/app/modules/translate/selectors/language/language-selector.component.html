@@ -1,0 +1,12 @@
+@let _docs = documents();
+<wselect
+	(wChange)="wModel.set($event); wChange.emit($event)"
+	[placeholder]="(placeholder() | translate)()"
+	[disabled]="disabled() || !_docs.length"
+	[searchable]="searchable()"
+	[clearable]="clearable()"
+	[buttons]="buttons()"
+	[wModel]="wModel()"
+	[items]="_docs"
+>
+</wselect>

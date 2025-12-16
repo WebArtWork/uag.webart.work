@@ -1,0 +1,33 @@
+/* BEM: .filters */
+.filters {
+	display: flex;
+	gap: var(--gutter);
+	align-items: center;
+	justify-content: space-between;
+
+	&__left {
+		display: flex;
+		gap: 10px;
+		align-items: center;
+	}
+
+	&__sort {
+		display: inline-flex;
+		gap: 8px;
+		align-items: center;
+	}
+
+	&__label {
+		color: var(--c-text-primary);
+		font-size: 0.95rem;
+	}
+}
+
+/* ============ Mobile (≤991px) ============ */
+@media (max-width: 991px) {
+	.filters {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 10px;
+	}
+}

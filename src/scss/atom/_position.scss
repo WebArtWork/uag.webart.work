@@ -1,0 +1,130 @@
+// Position / inset / overflow / z-index helpers
+
+/* Positioning */
+.pos-static {
+	position: static;
+}
+.pos-rel {
+	position: relative;
+}
+.pos-abs {
+	position: absolute;
+}
+.pos-fix {
+	position: fixed;
+}
+.pos-sticky {
+	position: sticky;
+}
+
+/* Inset helpers (logical, RTL-safe) */
+.top-0 {
+	top: 0;
+}
+.end-0 {
+	inset-inline-end: 0;
+}
+.bottom-0 {
+	bottom: 0;
+}
+.start-0 {
+	inset-inline-start: 0;
+}
+
+.top-50 {
+	top: 50%;
+}
+.end-50 {
+	inset-inline-end: 50%;
+}
+.bottom-50 {
+	bottom: 50%;
+}
+.start-50 {
+	inset-inline-start: 50%;
+}
+
+.top-100 {
+	top: 100%;
+}
+.end-100 {
+	inset-inline-end: 100%;
+}
+.bottom-100 {
+	bottom: 100%;
+}
+.start-100 {
+	inset-inline-start: 100%;
+}
+
+/* Translate utilities for centering combos */
+.translate-middle {
+	transform: translate(-50%, -50%);
+}
+.translate-middle-x {
+	transform: translateX(-50%);
+}
+.translate-middle-y {
+	transform: translateY(-50%);
+}
+
+/* Overflow */
+.overflow-auto {
+	overflow: auto;
+}
+.overflow-hidden {
+	overflow: hidden;
+}
+.overflow-scroll {
+	overflow: scroll;
+}
+.overflow-visible {
+	overflow: visible;
+}
+
+/* Axis-specific overflow (logical) */
+.overflow-x-auto {
+	overflow-x: auto;
+}
+.overflow-x-hidden {
+	overflow-x: hidden;
+}
+.overflow-x-scroll {
+	overflow-x: scroll;
+}
+.overflow-y-auto {
+	overflow-y: auto;
+}
+.overflow-y-hidden {
+	overflow-y: hidden;
+}
+.overflow-y-scroll {
+	overflow-y: scroll;
+}
+
+/* Z-index scale */
+.z-0 {
+	z-index: 0;
+}
+.z-1 {
+	z-index: 1;
+}
+.z-10 {
+	z-index: 10;
+}
+.z-100 {
+	z-index: 100;
+}
+.z-1000 {
+	z-index: 1000;
+}
+
+/* Stretched link: make entire card clickable via child link */
+.stretched-link {
+	position: relative;
+}
+.stretched-link > a::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+}

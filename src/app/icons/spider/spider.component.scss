@@ -1,0 +1,20 @@
+.spider {
+	/* sizing tokens */
+	--spider-w: 100%;
+	--spider-h: auto;
+
+	display: inline-block;
+	inline-size: var(--spider-w);
+	block-size: var(--spider-h);
+	line-height: 0; /* remove gaps */
+
+	&__svg {
+		display: block;
+		inline-size: 100%;
+		block-size: 100%;
+		max-inline-size: 100%;
+		max-block-size: 100%;
+		/* keep original ratio (72 x 84) when only width is provided */
+		aspect-ratio: 72 / 84;
+	}
+}

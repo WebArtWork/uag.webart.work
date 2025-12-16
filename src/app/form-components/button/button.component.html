@@ -1,0 +1,19 @@
+<ng-template #templateRef let-data>
+	<wbutton
+		[type]="data.props.type ?? buttonDefaults.type"
+		[extraClass]="data.props.extraClass ?? buttonDefaults.extraClass"
+		[disabled]="
+			data.props.disabled === true || data.component.disabled === true
+		"
+		[disableSubmit]="
+			data.props.disableSubmit ?? buttonDefaults.disableSubmit
+		"
+		[isMultipleClicksAllowed]="
+			data.props.isMultipleClicksAllowed ??
+			buttonDefaults.isMultipleClicksAllowed
+		"
+		(wClick)="data.props.onClick?.($event)"
+	>
+		{{ data.props.label || data.props.text || 'Button' }}
+	</wbutton>
+</ng-template>

@@ -1,0 +1,117 @@
+@let _label = label(); @let _ph = placeholder(); @let _files = files(); @let
+_disabled = isDisabled(); @let _view = view();
+
+<div class="wfile" [class._disabled]="_disabled">
+	@if (_label) {
+	<div class="wfile__label">{{ (_label | translate)() }}</div>
+	}
+
+	<!-- shared file input -->
+	<input
+		#fileInput
+		type="file"
+		[attr.accept]="accept()"
+		[attr.multiple]="isMultiple() ? '' : null"
+		(change)="onPicked(fileInput)"
+		hidden
+	/>
+
+	@if (_view === 'thumb-only') {
+	<!-- avatar / thumb-only view -->
+	<div
+		class="wfile__body wfile__body--thumb-only"
+		(click)="triggerPick(fileInput)"
+	>
+		@if (_files.length === 0) {
+		<ng-container [ngTemplateOutlet]="t_empty() || emptyTpl"></ng-container>
+		<ng-template #emptyTpl>
+			<div class="wfile__empty">{{ (_ph | translate)() }}</div>
+		</ng-template>
+		} @else {
+		<!-- show only first item -->
+		<ng-container
+			[ngTemplateOutlet]="t_item() || itemTpl"
+			[ngTemplateOutletContext]="{ $implicit: _files[0], index: 0 }"
+		></ng-container>
+
+		<ng-template #itemTpl let-src let-index="index">
+			@if (preview() && isImage(src)) {
+			<img class="wfile__thumb" [src]="src" alt="preview" />
+			} @else {
+			<span class="wfile__name">{{ src }}</span>
+			}
+		</ng-template>
+		} @if (clearable() && _files.length) {
+		<button
+			type="button"
+			class="wfile__remove material-icons"
+			(click)="clear(); $event.stopPropagation()"
+		>
+			close
+		</button>
+		}
+	</div>
+	} @else {
+	<!-- dropzone / list views -->
+	<div class="wfile__body">
+		<div class="wfile__list">
+			@if (_files.length === 0) {
+			<ng-container
+				[ngTemplateOutlet]="t_empty() || emptyTpl"
+			></ng-container>
+			<ng-template #emptyTpl>
+				<div class="wfile__empty">{{ (_ph | translate)() }}</div>
+			</ng-template>
+			} @else {
+			<ul>
+				@for (src of _files; track src; let i = $index) {
+				<li class="wfile__item">
+					<ng-container
+						[ngTemplateOutlet]="t_item() || itemTpl"
+						[ngTemplateOutletContext]="{ $implicit: src, index: i }"
+					></ng-container>
+					<ng-template #itemTpl let-src let-index="index">
+						<span class="wfile__name">{{ src }}</span>
+						@if (preview() && isImage(src)) {
+						<img class="wfile__thumb" [src]="src" alt="preview" />
+						}
+						<button
+							type="button"
+							class="wfile__remove material-icons"
+							(click)="removeAt(index)"
+						>
+							close
+						</button>
+					</ng-template>
+				</li>
+				}
+			</ul>
+			}
+		</div>
+
+		<div class="wfile__actions">
+			<button
+				type="button"
+				class="wfile__btn"
+				(click)="triggerPick(fileInput)"
+				[disabled]="_disabled"
+			>
+				<span class="material-icons">upload_file</span>
+				<span>{{ ('Browse' | translate)() }}</span>
+			</button>
+
+			@if (clearable() && _files.length) {
+			<button
+				type="button"
+				class="wfile__btn wfile__btn--ghost"
+				(click)="clear()"
+				[disabled]="_disabled"
+			>
+				<span class="material-icons">close</span>
+				<span>{{ ('Clear' | translate)() }}</span>
+			</button>
+			}
+		</div>
+	</div>
+	}
+</div>

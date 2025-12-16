@@ -1,0 +1,19 @@
+<wtable
+	[rows]="documents()"
+	[columns]="columns"
+	[config]="config"
+	title="Translates"
+>
+	<ng-template tableHeader>
+		<language-selector
+			(wChange)="languageService.setLanguageId(($event ?? '') + '')"
+			[wModel]="languageService.language()?._id"
+			[isMutatable]="true"
+			[clearable]="false"
+		/>
+	</ng-template>
+	<ng-template cell="phrase" let-data>{{ data.text }}</ng-template>
+	<ng-template cell="translation" let-data>
+		<span [translate]="data.text"></span>
+	</ng-template>
+</wtable>

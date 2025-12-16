@@ -1,0 +1,106 @@
+<div class="profile grid g-4">
+	<div class="profile__card shadow rounded-card">
+		<div class="profile__tabs">
+			<wbutton
+				[type]="activeTab() === 'profile' ? 'primary' : 'link'"
+				[isMultipleClicksAllowed]="true"
+				(click)="setTab('profile')"
+				class="profile__tab"
+			>
+				Profile
+			</wbutton>
+
+			<wbutton
+				[type]="activeTab() === 'security' ? 'primary' : 'link'"
+				[isMultipleClicksAllowed]="true"
+				(click)="setTab('security')"
+				class="profile__tab"
+			>
+				Security
+			</wbutton>
+		</div>
+
+		<div class="profile__body">
+			@if (activeTab() === 'profile') {
+			<div class="profile__panel profile__panel--profile">
+				<ngx-file
+					mode="single-image"
+					view="thumb-only"
+					[wImage]="userService.thumb()"
+					(wImageChange)="updateThumb($event || '')"
+					[container]="'user'"
+					[name]="userService.user()._id + '.jpg'"
+					[accept]="'image/*'"
+					[clearable]="false"
+					[preview]="true"
+					[cropWidth]="512"
+					[cropHeight]="512"
+				></ngx-file>
+
+				<form
+					(submit)="wFormSubmit(); $event.preventDefault()"
+					class="profile__fields stack"
+				>
+					<winput
+						placeholder="Enter your name..."
+						[field]="profileForm.name"
+					></winput>
+
+					<winput
+						placeholder="Enter your phone..."
+						[field]="profileForm.phone"
+						type="tel"
+					></winput>
+
+					<winput
+						placeholder="Enter your bio..."
+						[field]="profileForm.bio"
+						type="textarea"
+					></winput>
+
+					<wbutton
+						[disabled]="isSubmitDisabled()"
+						type="primary"
+						class="mt-2"
+					>
+						Update
+					</wbutton>
+				</form>
+			</div>
+			} @else {
+			<div class="profile__panel profile__panel--security">
+				<form
+					(submit)="wSecuritySubmit(); $event.preventDefault()"
+					class="profile__fields stack"
+				>
+					<winput
+						placeholder="Enter your current password..."
+						[field]="securityForm.currentPassword"
+						type="password"
+					></winput>
+
+					<winput
+						placeholder="Enter your new password..."
+						[field]="securityForm.newPassword"
+						type="password"
+					></winput>
+
+					<winput
+						placeholder="Confirm your new password..."
+						[field]="securityForm.confirmPassword"
+						type="password"
+					></winput>
+
+					<wbutton
+						[disabled]="isSecurityDisabled()"
+						type="primary"
+						class="mt-2"
+					>
+						Update password
+					</wbutton>
+				</form>
+			</div>
+			}
+		</div>
+	</div>
+</div>

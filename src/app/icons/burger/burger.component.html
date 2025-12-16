@@ -1,0 +1,10 @@
+<div class="burger" [class.burger--open]="isOpen()">
+	<button
+		aria-label="Toggle menu"
+		class="burger__btn"
+		(click)="toggle()"
+		type="button"
+	>
+		<span class="burger__bar"></span>
+	</button>
+</div>

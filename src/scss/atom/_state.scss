@@ -1,0 +1,90 @@
+/* State & interaction helpers */
+.disabled,
+.is-disabled {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.pe-none {
+	pointer-events: none;
+}
+.pe-auto {
+	pointer-events: auto;
+}
+
+.user-select-none {
+	user-select: none;
+}
+.user-select-text {
+	user-select: text;
+}
+.user-select-all {
+	user-select: all;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+.cursor-default {
+	cursor: default;
+}
+.cursor-move {
+	cursor: move;
+}
+.cursor-not-allowed {
+	cursor: not-allowed;
+}
+
+/* Shadows */
+.shadow-sm {
+	box-shadow:
+		0 1px 2px rgba(0, 0, 0, 0.06),
+		0 1px 1px rgba(0, 0, 0, 0.04);
+}
+.shadow {
+	box-shadow:
+		0 2px 6px rgba(0, 0, 0, 0.08),
+		0 2px 4px rgba(0, 0, 0, 0.06);
+}
+.shadow-lg {
+	box-shadow:
+		0 6px 20px rgba(0, 0, 0, 0.12),
+		0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Borders & radius helpers */
+.rounded {
+	border-radius: var(--b-radius);
+}
+.rounded-sm {
+	border-radius: calc(var(--b-radius) - 2px);
+}
+.rounded-lg {
+	border-radius: calc(var(--b-radius) + 4px);
+}
+.rounded-full {
+	border-radius: 9999px;
+}
+.border {
+	border: 1px solid var(--c-border);
+}
+.border-0 {
+	border: 0;
+}
+
+/* Opacity helpers */
+.opacity-0 {
+	opacity: 0;
+}
+.opacity-25 {
+	opacity: 0.25;
+}
+.opacity-50 {
+	opacity: 0.5;
+}
+.opacity-75 {
+	opacity: 0.75;
+}
+.opacity-100 {
+	opacity: 1;
+}

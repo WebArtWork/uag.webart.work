@@ -1,0 +1,82 @@
+// Color utilities (text/bg/border) and opacity
+
+/* Text colors */
+.text-primary {
+	color: var(--c-primary);
+}
+.text-secondary {
+	color: var(--c-secondary);
+}
+.text-muted {
+	color: var(--c-text-muted);
+}
+
+/* Backgrounds */
+.bg-primary {
+	background-color: var(--c-primary);
+}
+.bg-secondary {
+	background-color: var(--c-secondary);
+}
+.bg-body {
+	background-color: var(--c-bg-primary);
+}
+
+/* Borders */
+.border {
+	border: 1px solid var(--c-border);
+}
+.border-0 {
+	border: 0;
+}
+.border-top {
+	border-top: 1px solid var(--c-border);
+}
+.border-end {
+	border-inline-end: 1px solid var(--c-border);
+}
+.border-bottom {
+	border-bottom: 1px solid var(--c-border);
+}
+.border-start {
+	border-inline-start: 1px solid var(--c-border);
+}
+
+/* Border radius helpers */
+.rounded {
+	border-radius: var(--b-radius);
+}
+.rounded-0 {
+	border-radius: 0;
+}
+.rounded-pill {
+	border-radius: 9999px;
+}
+.rounded-card {
+	border-radius: var(--b-radius-card);
+}
+
+/* Opacity */
+.opacity-0 {
+	opacity: 0;
+}
+.opacity-25 {
+	opacity: 0.25;
+}
+.opacity-50 {
+	opacity: 0.5;
+}
+.opacity-75 {
+	opacity: 0.75;
+}
+.opacity-100 {
+	opacity: 1;
+}
+
+/* Hover helpers for primary/secondary */
+.hover-primary:hover {
+	color: var(--c-primary);
+}
+.hover-secondary:hover {
+	color: var(--c-secondary);
+}

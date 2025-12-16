@@ -1,0 +1,15 @@
+<section
+	class="features"
+	[style.--features-min]="minWidth() + 'px'"
+	[style.gap]="gap()"
+>
+	<div
+		*ngFor="let f of items(); let i = index"
+		class="features__item"
+		(click)="featureClick.emit({ index: i, item: f })"
+	>
+		<div class="features__icon">{{ f.icon }}</div>
+		<div class="features__title">{{ f.title }}</div>
+		<div class="features__desc" *ngIf="f.desc">{{ f.desc }}</div>
+	</div>
+</section>

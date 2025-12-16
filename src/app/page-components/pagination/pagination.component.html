@@ -1,0 +1,40 @@
+<nav class="pagination" [attr.aria-label]="ariaLabel()">
+	<button
+		*ngIf="showPrevNext()"
+		type="button"
+		class="pagination__page"
+		[class.pagination__page--disabled]="isPrevDisabled()"
+		[disabled]="isPrevDisabled()"
+		(click)="prev()"
+	>
+		{{ prevLabel() }}
+	</button>
+
+	<ng-container *ngFor="let token of pageList()">
+		<button
+			*ngIf="isNumber(token); else ellipsisTpl"
+			type="button"
+			class="pagination__page"
+			[class.pagination__page--active]="isActive(token)"
+			[attr.aria-current]="isActive(token) ? 'page' : null"
+			(click)="goTo(token)"
+		>
+			{{ token }}
+		</button>
+	</ng-container>
+
+	<button
+		*ngIf="showPrevNext()"
+		type="button"
+		class="pagination__page"
+		[class.pagination__page--disabled]="isNextDisabled()"
+		[disabled]="isNextDisabled()"
+		(click)="next()"
+	>
+		{{ nextLabel() }}
+	</button>
+
+	<ng-template #ellipsisTpl>
+		<span class="pagination__ellipsis" aria-hidden="true">…</span>
+	</ng-template>
+</nav>

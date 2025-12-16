@@ -1,0 +1,22 @@
+/* BEM: .footer */
+.footer {
+	display: flex;
+	gap: 10px;
+	justify-content: space-between;
+	align-items: center;
+	color: var(--c-text-primary);
+
+	&__right {
+		display: inline-flex;
+		gap: 12px;
+	}
+
+	&__link {
+		color: var(--c-text-secondary);
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}

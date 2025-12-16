@@ -1,0 +1,9 @@
+<wselect
+	placeholder="{{ ('Select bird...' | translate)() }}"
+	[searchable]="searchable()"
+	[clearable]="clearable()"
+	[disabled]="disabled()"
+	[items]="documents()"
+	[wModel]="wModel()"
+	(wChange)="wChange.emit($event)"
+></wselect>

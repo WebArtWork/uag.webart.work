@@ -1,0 +1,22 @@
+/* BEM: .form (wrapper) */
+.form {
+	display: grid;
+	gap: 10px;
+	background: var(--c-bg-secondary);
+	border: 1px solid var(--c-border);
+	border-radius: 12px;
+	padding: 14px;
+
+	&__actions {
+		display: flex;
+		gap: 10px;
+		justify-content: flex-end;
+	}
+
+	&__actions--center {
+		justify-content: center;
+	}
+	&__actions--left {
+		justify-content: flex-start;
+	}
+}

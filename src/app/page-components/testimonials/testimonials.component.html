@@ -1,0 +1,29 @@
+<section
+	class="testimonials"
+	[style.--testimonials-min]="minWidth() + 'px'"
+	[class.testimonials--center]="align() === 'center'"
+	[class.testimonials--right]="align() === 'right'"
+>
+	<figure
+		*ngFor="let t of items(); let i = index"
+		class="testimonials__item"
+		(click)="itemClick.emit({ index: i, item: t })"
+	>
+		<div class="testimonials__header" *ngIf="showAvatar() && t.avatarUrl">
+			<img
+				class="testimonials__avatar"
+				[src]="t.avatarUrl"
+				[alt]="t.alt || t.author"
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
+		<blockquote class="testimonials__quote">{{ t.quote }}</blockquote>
+		<figcaption class="testimonials__author">
+			<span class="testimonials__name">{{ t.author }}</span>
+			<span *ngIf="t.title" class="testimonials__title"
+				>• {{ t.title }}</span
+			>
+		</figcaption>
+	</figure>
+</section>

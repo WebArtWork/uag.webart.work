@@ -1,0 +1,11 @@
+@use 'scss';
+
+/* Keep TinyMCE menus / dialogs above app modals */
+.tox-tinymce,
+.tox-tinymce-aux,
+.tox .tox-dialog,
+.tox .tox-menu,
+.tox .tox-menu-wrap,
+.tox .tox-pop {
+	z-index: 999999 !important; // higher than your modal overlay
+}
