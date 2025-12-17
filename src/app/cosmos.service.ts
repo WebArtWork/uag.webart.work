@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { environment } from '@env';
 import { firstValueFrom } from 'rxjs';
+import { WalletService } from './wallet/wallet.service';
 
 export type CosmosConfig = {
 	chainId: string;
@@ -26,9 +27,9 @@ export type CosmosConfig = {
 	};
 
 	coin: {
-		denom: string; // "UAG"
-		minimalDenom: string; // "uuag"
-		decimals: number; // 6
+		denom: string;
+		minimalDenom: string;
+		decimals: number;
 	};
 
 	gasPrice: {
@@ -37,38 +38,61 @@ export type CosmosConfig = {
 		high: number;
 	};
 
-	defaultGasPriceString?: string; // e.g. "0.025uuag"
+	defaultGasPriceString?: string;
 };
 
 export const COSMOS_CONFIG = new InjectionToken<CosmosConfig>('COSMOS_CONFIG');
-
-type Keplr = {
-	experimentalSuggestChain: (c: unknown) => Promise<void>;
-	enable: (chainId: string) => Promise<void>;
-	getKey: (chainId: string) => Promise<{ bech32Address: string }>;
-	getOfflineSignerAuto?: (chainId: string) => any;
-};
 
 type BankBalancesResponse = {
 	balances?: Array<{ denom?: string; amount?: string }>;
 };
 
+type TxsByEventsResponse = {
+	txs?: any[];
+	tx_responses?: Array<{
+		txhash?: string;
+		height?: string | number;
+		timestamp?: string;
+		code?: number; // 0 = success
+		raw_log?: string;
+	}>;
+	pagination?: { next_key?: string | null; total?: string };
+};
+
+export type TxItem = {
+	hash: string;
+	height: number;
+	timestamp: string;
+	success: boolean;
+
+	direction: 'in' | 'out' | 'self';
+	from: string;
+	to: string;
+
+	amountMinimal: bigint;
+	memo: string;
+};
+
 @Injectable({ providedIn: 'root' })
 export class CosmosService {
 	private readonly http = inject(HttpClient);
+	private readonly wallet = inject(WalletService);
 
 	readonly isConnecting = signal(false);
 	readonly isSending = signal(false);
 
-	readonly address = signal<string>('');
-	readonly minimalBalance = signal<bigint>(0n); // in minimal denom (e.g. uuag)
+	readonly address = this.wallet.address;
 
-	// Send form (prefilled with own address)
+	readonly minimalBalance = signal<bigint>(0n);
+
 	readonly toAddress = signal<string>('');
-	readonly amount = signal<string>('0.000001'); // in main denom (e.g. UAG)
+	readonly amount = signal<string>('0.000001');
 	readonly txHash = signal<string>('');
 
 	readonly error = signal<string>('');
+
+	readonly isLoadingTxs = signal(false);
+	readonly txs = signal<TxItem[]>([]);
 
 	readonly balance = computed(() => {
 		const d = BigInt(10 ** environment.cosmos.coin.decimals);
@@ -78,7 +102,6 @@ export class CosmosService {
 	});
 
 	constructor() {
-		// prefill "to" with own address whenever we get address (and if empty)
 		effect(() => {
 			const addr = this.address();
 			if (addr && !this.toAddress()) this.toAddress.set(addr);
@@ -91,60 +114,9 @@ export class CosmosService {
 		this.isConnecting.set(true);
 
 		try {
-			const keplr = (window as any)?.keplr as Keplr | undefined;
-			if (!keplr) throw new Error('Keplr extension not found');
-
-			await keplr.experimentalSuggestChain({
-				chainId: environment.cosmos.chainId,
-				chainName: environment.cosmos.chainName,
-				rpc: environment.cosmos.rpc,
-				rest: environment.cosmos.rest,
-				bip44: { coinType: 118 },
-				bech32Config: {
-					bech32PrefixAccAddr:
-						environment.cosmos.bech32Prefix.accAddr,
-					bech32PrefixAccPub: environment.cosmos.bech32Prefix.accPub,
-					bech32PrefixValAddr:
-						environment.cosmos.bech32Prefix.valAddr,
-					bech32PrefixValPub: environment.cosmos.bech32Prefix.valPub,
-					bech32PrefixConsAddr:
-						environment.cosmos.bech32Prefix.consAddr,
-					bech32PrefixConsPub:
-						environment.cosmos.bech32Prefix.consPub,
-				},
-				currencies: [
-					{
-						coinDenom: environment.cosmos.coin.denom,
-						coinMinimalDenom: environment.cosmos.coin.minimalDenom,
-						coinDecimals: environment.cosmos.coin.decimals,
-					},
-				],
-				feeCurrencies: [
-					{
-						coinDenom: environment.cosmos.coin.denom,
-						coinMinimalDenom: environment.cosmos.coin.minimalDenom,
-						coinDecimals: environment.cosmos.coin.decimals,
-						gasPriceStep: {
-							low: environment.cosmos.gasPrice.low,
-							average: environment.cosmos.gasPrice.average,
-							high: environment.cosmos.gasPrice.high,
-						},
-					},
-				],
-				stakeCurrency: {
-					coinDenom: environment.cosmos.coin.denom,
-					coinMinimalDenom: environment.cosmos.coin.minimalDenom,
-					coinDecimals: environment.cosmos.coin.decimals,
-				},
-				features: [],
-			});
-
-			await keplr.enable(environment.cosmos.chainId);
-
-			const key = await keplr.getKey(environment.cosmos.chainId);
-			this.address.set(key.bech32Address);
-
+			await this.wallet.connect('keplr');
 			await this.refreshBalance();
+			await this.refreshTransactions();
 		} catch (e) {
 			this.error.set(this.formatErr(e));
 		} finally {
@@ -168,10 +140,132 @@ export class CosmosService {
 				balances.find(
 					(b) => b.denom === environment.cosmos.coin.minimalDenom,
 				)?.amount ?? '0';
+
 			this.minimalBalance.set(BigInt(amtStr));
 		} catch (e) {
 			this.error.set(this.formatErr(e));
 		}
+	}
+
+	async refreshTransactions(limit = 20): Promise<void> {
+		this.error.set('');
+		const addr = this.address();
+		if (!addr) return;
+
+		this.isLoadingTxs.set(true);
+
+		try {
+			const [incoming, outgoing] = await Promise.all([
+				this.fetchTxsByEvent(`transfer.recipient='${addr}'`, limit),
+				this.fetchTxsByEvent(`transfer.sender='${addr}'`, limit),
+			]);
+
+			// merge by hash
+			const map = new Map<string, TxItem>();
+			for (const tx of [...incoming, ...outgoing]) map.set(tx.hash, tx);
+
+			const merged = Array.from(map.values()).sort(
+				(a, b) => b.height - a.height,
+			);
+
+			this.txs.set(merged);
+		} catch (e) {
+			this.error.set(this.formatErr(e));
+		} finally {
+			this.isLoadingTxs.set(false);
+		}
+	}
+
+	private async fetchTxsByEvent(
+		event: string,
+		limit: number,
+	): Promise<TxItem[]> {
+		const url =
+			`${environment.cosmos.rest}/cosmos/tx/v1beta1/txs` +
+			`?query=${encodeURIComponent(event)}` +
+			`&pagination.limit=${encodeURIComponent(String(limit))}` +
+			`&order_by=ORDER_BY_DESC`;
+
+		const res = await firstValueFrom(
+			this.http.get<TxsByEventsResponse>(url),
+		);
+
+		const txs = res?.txs ?? [];
+		const responses = res?.tx_responses ?? [];
+
+		const out: TxItem[] = [];
+		for (let i = 0; i < Math.min(txs.length, responses.length); i++) {
+			const tx = txs[i] ?? {};
+			const tr = responses[i] ?? {};
+
+			const parsed = this.parseFirstMsgSend(tx);
+			if (!parsed) continue;
+
+			const hash = String(tr.txhash ?? '').toUpperCase();
+			if (!hash) continue;
+
+			const height = Number(tr.height ?? 0);
+			const timestamp = String(tr.timestamp ?? '');
+			const success = Number(tr.code ?? 0) === 0;
+
+			const my = this.address();
+			const direction: TxItem['direction'] =
+				parsed.from === my && parsed.to === my
+					? 'self'
+					: parsed.to === my
+						? 'in'
+						: 'out';
+
+			out.push({
+				hash,
+				height,
+				timestamp,
+				success,
+				direction,
+				from: parsed.from,
+				to: parsed.to,
+				amountMinimal: parsed.amountMinimal,
+				memo: String(tx?.body?.memo ?? ''),
+			});
+		}
+
+		return out;
+	}
+
+	private parseFirstMsgSend(tx: any): null | {
+		from: string;
+		to: string;
+		amountMinimal: bigint;
+	} {
+		const msgs: any[] = tx?.body?.messages ?? [];
+		for (const m of msgs) {
+			// REST usually returns messages with "@type"
+			const t = m?.['@type'] ?? m?.type_url ?? '';
+			const isSend =
+				t === '/cosmos.bank.v1beta1.MsgSend' ||
+				t === 'cosmos.bank.v1beta1.MsgSend';
+
+			if (!isSend) continue;
+
+			const from = String(m?.from_address ?? '');
+			const to = String(m?.to_address ?? '');
+			const amounts: any[] = m?.amount ?? [];
+			const coin = amounts.find(
+				(c) => c?.denom === environment.cosmos.coin.minimalDenom,
+			);
+
+			const amtStr = String(coin?.amount ?? '0');
+			let amountMinimal = 0n;
+			try {
+				amountMinimal = BigInt(amtStr);
+			} catch {
+				amountMinimal = 0n;
+			}
+
+			return { from, to, amountMinimal };
+		}
+
+		return null;
 	}
 
 	async send(): Promise<void> {
@@ -183,7 +277,7 @@ export class CosmosService {
 		const amtMain = this.amount().trim();
 
 		if (!from) {
-			this.error.set('Connect Keplr first.');
+			this.error.set('Connect wallet first.');
 			return;
 		}
 		if (!to) {
@@ -208,23 +302,11 @@ export class CosmosService {
 		this.isSending.set(true);
 
 		try {
-			const keplr = (window as any)?.keplr as Keplr | undefined;
-			if (!keplr) throw new Error('Keplr extension not found');
-
-			// deps:
-			// npm i @cosmjs/stargate @cosmjs/proto-signing
 			const { SigningStargateClient, GasPrice } = await import(
 				'@cosmjs/stargate'
 			);
 
-			const signer =
-				typeof keplr.getOfflineSignerAuto === 'function'
-					? keplr.getOfflineSignerAuto(environment.cosmos.chainId)
-					: (window as any).getOfflineSigner?.(
-							environment.cosmos.chainId,
-						);
-
-			if (!signer) throw new Error('Keplr signer not available');
+			const signer = await this.wallet.getSigner();
 
 			const gasPriceStr =
 				environment.cosmos.defaultGasPriceString ??
@@ -232,7 +314,7 @@ export class CosmosService {
 
 			const client = await SigningStargateClient.connectWithSigner(
 				environment.cosmos.rpc,
-				signer,
+				signer as any,
 				{
 					gasPrice: GasPrice.fromString(gasPriceStr),
 				},
@@ -253,6 +335,7 @@ export class CosmosService {
 
 			this.txHash.set(result.transactionHash || '');
 			await this.refreshBalance();
+			await this.refreshTransactions();
 		} catch (e) {
 			this.error.set(this.formatErr(e));
 		} finally {
@@ -261,7 +344,6 @@ export class CosmosService {
 	}
 
 	private mainToMinimal(value: string): bigint {
-		// accepts "1", "1.2", "0.000001" (decimals from config)
 		const normalized = value.replace(',', '.');
 		if (!/^\d+(\.\d+)?$/.test(normalized)) throw new Error('bad number');
 

@@ -37,7 +37,7 @@ export const environment = {
 	cosmos: {
 		chainId: 'uag-test-1',
 		chainName: 'UAG Local',
-		rpc: 'http://127.0.0.1:26657',
+		rpc: 'http://172.28.14.151:26658/proxy',
 		rest: 'http://127.0.0.1:1317',
 
 		bech32Prefix: {
