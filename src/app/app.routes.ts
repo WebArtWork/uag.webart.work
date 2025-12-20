@@ -18,72 +18,77 @@ export const routes: Routes = [
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'Faq'
-					}
+						title: 'Faq',
+					},
 				},
-				loadChildren: () => import('./pages/public/faq/faq.routes').then(m => m.faqRoutes)
-			}, 
+				loadChildren: () =>
+					import('./pages/public/faq/faq.routes').then(
+						(m) => m.faqRoutes,
+					),
+			},
 			{
 				path: 'governance',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'Governance'
-					}
+						title: 'Governance',
+					},
 				},
-				loadChildren: () => import('./pages/public/governance/governance.routes').then(m => m.governanceRoutes)
-			}, 
+				loadChildren: () =>
+					import('./pages/public/governance/governance.routes').then(
+						(m) => m.governanceRoutes,
+					),
+			},
 			{
 				path: 'region',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'Region'
-					}
+						title: 'Region',
+					},
 				},
-				loadChildren: () => import('./pages/public/region/region.routes').then(m => m.regionRoutes)
-			}, 
+				loadChildren: () =>
+					import('./pages/public/region/region.routes').then(
+						(m) => m.regionRoutes,
+					),
+			},
 			{
 				path: 'regions',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'Regions'
-					}
+						title: 'Regions',
+					},
 				},
-				loadChildren: () => import('./pages/public/regions/regions.routes').then(m => m.regionsRoutes)
-			}, 
+				loadChildren: () =>
+					import('./pages/public/regions/regions.routes').then(
+						(m) => m.regionsRoutes,
+					),
+			},
 			{
 				path: 'about',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'About'
-					}
+						title: 'About',
+					},
 				},
-				loadChildren: () => import('./pages/public/about/about.routes').then(m => m.aboutRoutes)
-			}, 
-			{
-				path: 'land',
-				canActivate: [MetaGuard],
-				data: {
-					meta: {
-						title: 'Land'
-					}
-				},
-				loadChildren: () => import('./pages/public/land/land.routes').then(m => m.landRoutes)
-			}, 
+				loadChildren: () =>
+					import('./pages/public/about/about.routes').then(
+						(m) => m.aboutRoutes,
+					),
+			},
 			{
 				path: '',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'Components',
+						title: 'Land',
 					},
 				},
 				loadChildren: () =>
-					import('./pages/public/components/components.routes').then(
-						(m) => m.componentsRoutes,
+					import('./pages/public/land/land.routes').then(
+						(m) => m.landRoutes,
 					),
 			},
 		],
@@ -126,41 +131,53 @@ export const routes: Routes = [
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'Citizen'
-					}
+						title: 'Citizen',
+					},
 				},
-				loadChildren: () => import('./pages/user/citizen/citizen.routes').then(m => m.citizenRoutes)
-			}, 
+				loadChildren: () =>
+					import('./pages/user/citizen/citizen.routes').then(
+						(m) => m.citizenRoutes,
+					),
+			},
 			{
 				path: 'transaction',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'Transaction'
-					}
+						title: 'Transaction',
+					},
 				},
-				loadChildren: () => import('./pages/user/transaction/transaction.routes').then(m => m.transactionRoutes)
-			}, 
+				loadChildren: () =>
+					import('./pages/user/transaction/transaction.routes').then(
+						(m) => m.transactionRoutes,
+					),
+			},
 			{
 				path: 'transactions',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'Transactions'
-					}
+						title: 'Transactions',
+					},
 				},
-				loadChildren: () => import('./pages/user/transactions/transactions.routes').then(m => m.transactionsRoutes)
-			}, 
+				loadChildren: () =>
+					import(
+						'./pages/user/transactions/transactions.routes'
+					).then((m) => m.transactionsRoutes),
+			},
 			{
 				path: 'dashboard',
 				canActivate: [MetaGuard],
 				data: {
 					meta: {
-						title: 'Dashboard'
-					}
+						title: 'Dashboard',
+					},
 				},
-				loadChildren: () => import('./pages/user/dashboard/dashboard.routes').then(m => m.dashboardRoutes)
-			}, 
+				loadChildren: () =>
+					import('./pages/user/dashboard/dashboard.routes').then(
+						(m) => m.dashboardRoutes,
+					),
+			},
 			{
 				path: 'profile',
 				canActivate: [MetaGuard],
