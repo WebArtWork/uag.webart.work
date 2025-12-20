@@ -17,7 +17,7 @@ type HeaderVariant = 'public' | 'user';
 	imports: [MaterialComponent, RouterLink],
 })
 export class HeaderComponent {
-	variant = input<HeaderVariant>('public');
+	showSidebar = input<boolean>(false);
 
 	/** User layout only */
 	menuToggle = output<void>();

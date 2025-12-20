@@ -65,9 +65,23 @@
 	}
 
 	<material-icon
-		routerLink="/birds"
-		icon="translate"
-		name="Birds"
+		routerLink="/"
+		icon="home"
+		name="Home"
+		(click)="onNav()"
+	></material-icon>
+
+	<material-icon
+		routerLink="/about"
+		icon="info"
+		name="About"
+		(click)="onNav()"
+	></material-icon>
+
+	<material-icon
+		routerLink="/faq"
+		icon="help_outline"
+		name="F.A.Q."
 		(click)="onNav()"
 	></material-icon>
 

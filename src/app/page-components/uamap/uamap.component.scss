@@ -1,0 +1,26 @@
+.ua-map {
+	width: 100%;
+}
+
+.ua-map__svg {
+	width: 100%;
+	height: auto;
+	display: block;
+}
+
+.ua-map__region {
+	cursor: pointer;
+	transition: filter 120ms ease;
+}
+
+.ua-map__region:hover {
+	filter: brightness(1.08);
+}
+
+.ua-map__label {
+	pointer-events: none;
+	font-weight: 700;
+	paint-order: stroke;
+	stroke: rgba(255, 255, 255, 0.85);
+	stroke-width: 2px;
+}

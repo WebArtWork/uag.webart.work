@@ -1,16 +1,17 @@
 <nav class="header">
 	<ul class="header__menu">
 		<li class="header__menu-item">
-			@if (variant() === 'public') {
-			<material-icon routerLink="/components" icon="apps"></material-icon>
-			} @else {
-			<material-icon routerLink="/" icon="home"></material-icon>
-			}
+			<material-icon routerLink="/dashboard" icon="apps"></material-icon>
+			<material-icon
+				routerLink="/governance"
+				icon="public"
+			></material-icon>
+			<material-icon routerLink="/regions" icon="map"></material-icon>
 		</li>
 
 		<li class="header__menu-item header__menu-spacer"></li>
 
-		@if (variant() === 'user') {
+		@if (showSidebar()) {
 		<li class="header__menu-item header__menu-burger">
 			<button
 				class="header__iconbtn"

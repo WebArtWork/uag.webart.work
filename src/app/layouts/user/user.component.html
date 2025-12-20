@@ -1,8 +1,8 @@
 <div class="user">
 	<app-header
-		class="user__topbar"
-		[variant]="'user'"
 		(menuToggle)="toggleMenu()"
+		class="user__topbar"
+		[showSidebar]="true"
 	></app-header>
 
 	<app-sidebar [open]="isOpen()" (close)="closeMenu()"></app-sidebar>
