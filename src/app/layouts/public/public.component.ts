@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MaterialComponent } from '@icon/material';
+import { HeaderComponent } from 'src/app/layouts/header/header.component';
 
 @Component({
 	templateUrl: './public.component.html',
 	styleUrl: './public.component.scss',
-	imports: [MaterialComponent, RouterOutlet],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [HeaderComponent, RouterOutlet],
 })
 export class PublicComponent {}

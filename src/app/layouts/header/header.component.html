@@ -1,0 +1,26 @@
+<nav class="header">
+	<ul class="header__menu">
+		<li class="header__menu-item">
+			@if (variant() === 'public') {
+			<material-icon routerLink="/components" icon="apps"></material-icon>
+			} @else {
+			<material-icon routerLink="/" icon="home"></material-icon>
+			}
+		</li>
+
+		<li class="header__menu-item header__menu-spacer"></li>
+
+		@if (variant() === 'user') {
+		<li class="header__menu-item header__menu-burger">
+			<button
+				class="header__iconbtn"
+				type="button"
+				aria-label="Menu"
+				(click)="menuToggle.emit()"
+			>
+				<span class="material-icons">menu</span>
+			</button>
+		</li>
+		}
+	</ul>
+</nav>

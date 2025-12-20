@@ -1,0 +1,101 @@
+<aside class="sidebar" [class._open]="open()">
+	<button
+		class="sidebar__iconbtn sidebar__close"
+		type="button"
+		aria-label="Close sidebar"
+		(click)="onClose()"
+	>
+		<span class="material-icons">close</span>
+	</button>
+
+	<div class="sidebar__header">
+		<a class="sidebar__profile" routerLink="/profile" (click)="onNav()">
+			<img
+				class="sidebar__avatar sidebar__avatar--sm"
+				[src]="userService.thumb()"
+				alt="User avatar"
+				height="32"
+				width="32"
+			/>
+			<span class="sidebar__title" translate>Profile</span>
+		</a>
+
+		<wbutton
+			class="sidebar__iconbtn sidebar__logout"
+			type="link"
+			aria-label="Logout"
+			(click)="userService.logout(); onNav()"
+		>
+			<span class="material-icons">logout</span>
+		</wbutton>
+	</div>
+
+	<hr class="sidebar__hr" />
+
+	@if (userService.role('admin')) {
+	<material-icon
+		routerLink="/admin/users"
+		icon="manage_accounts"
+		name="Users"
+		(click)="onNav()"
+	></material-icon>
+
+	<material-icon
+		routerLink="/admin/clients"
+		icon="people"
+		name="Clients"
+		(click)="onNav()"
+	></material-icon>
+
+	<material-icon
+		routerLink="/admin/forms"
+		icon="backup_table"
+		name="Forms"
+		(click)="onNav()"
+	></material-icon>
+
+	<material-icon
+		routerLink="/admin/translates"
+		icon="translate"
+		name="Translates"
+		(click)="onNav()"
+	></material-icon>
+
+	<hr class="sidebar__hr" />
+	}
+
+	<material-icon
+		routerLink="/birds"
+		icon="translate"
+		name="Birds"
+		(click)="onNav()"
+	></material-icon>
+
+	<div class="sidebar__bottom">
+		<button
+			class="sidebar__btn"
+			type="button"
+			(click)="userService.toggleTheme()"
+		>
+			<span class="material-icons">
+				@if (userService.theme() === 'dark') { dark_mode } @else {
+				light_mode }
+			</span>
+			<span
+				[translate]="((userService.theme() || 'dark') | titlecase) + ' theme'"
+			></span>
+		</button>
+
+		@if (languageService.language()?.name) {
+		<button
+			class="sidebar__btn"
+			type="button"
+			aria-label="Switch language"
+			(click)="languageService.nextLanguage()"
+		>
+			<span class="material-icons">language</span>
+			<span [translate]="languageService.language()?.name || ''"></span>
+		</button>
+		}
+	</div>
+</aside>

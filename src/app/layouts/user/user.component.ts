@@ -1,46 +1,22 @@
-import { Platform } from '@angular/cdk/platform';
-import { TitleCasePipe } from '@angular/common';
-import {
-	ChangeDetectionStrategy,
-	Component,
-	inject,
-	signal,
-} from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { MaterialComponent } from '@icon/material';
-import { ButtonComponent } from '@lib/button';
-import { BurgerComponent } from 'src/app/icons/burger/burger.component';
-import { TranslateDirective } from 'src/app/modules/translate/directives/translate.directive';
-import { LanguageService } from 'src/app/modules/translate/services/language.service';
-import { UserService } from 'src/app/modules/user/services/user.service';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { HeaderComponent } from 'src/app/layouts/header/header.component';
+import { SidebarComponent } from 'src/app/layouts/sidebar/sidebar.component';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './user.component.html',
 	styleUrl: './user.component.scss',
-	imports: [
-		RouterOutlet,
-		TranslateDirective,
-		BurgerComponent,
-		MaterialComponent,
-		TitleCasePipe,
-		RouterLink,
-		TranslateDirective,
-		ButtonComponent,
-	],
+	imports: [RouterOutlet, HeaderComponent, SidebarComponent],
 })
 export class UserComponent {
-	readonly userService = inject(UserService);
-	readonly languageService = inject(LanguageService);
-	private readonly platform = inject(Platform);
-
 	isOpen = signal(false);
 
-	close(): void {
-		this.isOpen.set(false);
+	toggleMenu(): void {
+		this.isOpen.update((v) => !v);
 	}
 
-	closeIfDesktop(): void {
-		if (!this.platform.ANDROID && !this.platform.IOS) this.close();
+	closeMenu(): void {
+		this.isOpen.set(false);
 	}
 }
