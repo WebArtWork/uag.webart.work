@@ -17,6 +17,20 @@
 
 	<!-- Main -->
 	<main class="space__main">
-		<uag-uamap></uag-uamap>
+		<section class="regions">
+			<aside class="regions__list" aria-label="UA regions">
+				<h2 class="regions__title">Regions of Ukraine</h2>
+				<ul class="regions__items">
+					<li class="regions__item" *ngFor="let region of regions">
+						<span class="regions__dot"></span>
+						<span class="regions__name">{{ region }}</span>
+					</li>
+				</ul>
+			</aside>
+
+			<div class="regions__map">
+				<uag-uamap></uag-uamap>
+			</div>
+		</section>
 	</main>
 </div>
