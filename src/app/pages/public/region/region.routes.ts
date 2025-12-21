@@ -3,7 +3,7 @@ import { RegionComponent } from './region.component';
 
 export const regionRoutes: Routes = [
 	{
-		path: '',
+		path: ':id',
 		component: RegionComponent,
 	},
 ];

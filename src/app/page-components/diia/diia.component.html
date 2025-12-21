@@ -1,5 +1,10 @@
-<p>Component Diia is connected</p>
-
+@let _diiaUser = diiaService.user(); @if (_diiaUser) {
 <div>
-	<wbutton (click)="sign()">Sign with diia</wbutton>
+	{{_diiaUser.name}}
+	<span [translate]="_diiaUser.region"></span>
 </div>
+} @else if (userService.user()) {
+<div>
+	<wbutton (click)="diiaService.sign(region())">Sign with diia</wbutton>
+</div>
+}

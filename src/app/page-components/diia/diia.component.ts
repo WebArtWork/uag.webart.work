@@ -1,19 +1,24 @@
-import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	inject,
+	input,
+} from '@angular/core';
 import { ButtonComponent } from '@lib/button';
+import { TranslateDirective } from '@module/translate';
+import { UserService } from '@module/user';
+import { DiiaService } from './diia.service';
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [ButtonComponent],
+	imports: [ButtonComponent, TranslateDirective],
 	selector: 'page-diia',
 	templateUrl: './diia.component.html',
 	styleUrls: ['./diia.component.scss'],
 })
 export class DiiaComponent {
-	http = inject(HttpClient);
+	diiaService = inject(DiiaService);
 
-	// TODO we need a service which will handle if we should sign with diia or we are citizen
+	userService = inject(UserService);
 
-	sign() {
-		this.http.post('/api/diia/sign', {}).subscribe();
-	}
+	region = input.required<string>();
 }

@@ -40,7 +40,6 @@ export class UamapComponent implements AfterViewInit {
 		viewChild.required<ElementRef<SVGSVGElement>>('svg');
 
 	private isReady = false;
-	private cleanupFns: Array<() => void> = [];
 
 	constructor() {
 		effect(() => {
@@ -73,42 +72,44 @@ export class UamapComponent implements AfterViewInit {
 		return Array.from(svg.querySelectorAll('path[id]')) as SVGPathElement[];
 	}
 
+	private getRegionIdFromTarget(target: EventTarget | null): string | null {
+		if (!(target instanceof Element)) return null;
+		const path = target.closest('path[id]');
+		return path?.getAttribute('id') ?? null;
+	}
+
+	protected handleRegionPointerOver(event: PointerEvent): void {
+		const id = this.getRegionIdFromTarget(event.target);
+		if (!id) return;
+
+		this.regionHover.emit(id);
+	}
+
+	protected handleRegionPointerOut(event: PointerEvent): void {
+		const fromId = this.getRegionIdFromTarget(event.target);
+		if (!fromId) return;
+
+		const toId = this.getRegionIdFromTarget(event.relatedTarget);
+		if (fromId === toId) return;
+
+		this.regionHover.emit(null);
+	}
+
+	protected handleRegionClick(event: MouseEvent): void {
+		const id = this.getRegionIdFromTarget(event.target);
+		if (!id) return;
+
+		event.preventDefault();
+		event.stopPropagation();
+		this.regionClick.emit(id);
+	}
+
 	private attachRegionEvents(): void {
 		const svg = this.getSvg();
 		if (!svg) return;
 
-		// cleanup old listeners
-		for (const fn of this.cleanupFns) fn();
-		this.cleanupFns = [];
-
-		const paths = this.getRegionPaths(svg);
-
-		for (const path of paths) {
+		for (const path of this.getRegionPaths(svg)) {
 			path.classList.add('ua-map__region');
-
-			const id = path.getAttribute('id') ?? '';
-
-			const onEnter = () => this.regionHover.emit(id);
-			const onLeave = () => this.regionHover.emit(null);
-			const onClick = (e: MouseEvent) => {
-				e.preventDefault();
-				e.stopPropagation();
-				this.regionClick.emit(id);
-			};
-
-			path.addEventListener('mouseenter', onEnter);
-			path.addEventListener('mouseleave', onLeave);
-			path.addEventListener('click', onClick);
-
-			this.cleanupFns.push(() =>
-				path.removeEventListener('mouseenter', onEnter),
-			);
-			this.cleanupFns.push(() =>
-				path.removeEventListener('mouseleave', onLeave),
-			);
-			this.cleanupFns.push(() =>
-				path.removeEventListener('click', onClick),
-			);
 		}
 	}
 
