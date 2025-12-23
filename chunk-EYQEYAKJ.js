@@ -1,0 +1,1 @@
+import{Zb as i,ca as n,za as o}from"./chunk-YWXTHJOJ.js";import"./chunk-CIWMVH6F.js";var s=(()=>{class e{static{this.\u0275fac=function(t){return new(t||e)}}static{this.\u0275cmp=n({type:e,selectors:[["ng-component"]],decls:1,vars:0,template:function(t,c){t&1&&o(0,"router-outlet")},dependencies:[i],encapsulation:2,changeDetection:0})}}return e})();export{s as GuestComponent};
